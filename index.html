@@ -31,8 +31,11 @@
   <script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
   <script src="js/marked.js"></script>
   <script>
+  $(function() {
+
     $.get('resume.md').then(function(data) {
       $('#main_content').html(marked(data));
     })
+  })
   </script>
 </html>
