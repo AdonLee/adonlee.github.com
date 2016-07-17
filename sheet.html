@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="http://npm.yizhi.com/swiper/dist/css/swiper.min.css">
+    <style>
+        body {
+            margin: 0;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        .hide-child > ul {
+            display: none;
+        }
+        .list {
+            list-style:none;
+            font-size: 2rem;
+            padding: 0rem;
+        }
+        .list-item {
+            line-height: 4rem;
+            height: 4rem;
+            padding: 0 1rem;
+            border-bottom: 1px solid;
+        }
+        .list-item:hover {
+            background-color: #005eb1;
+        }
+        li {
+            cursor: text;
+        }
+        li.has-child {
+            cursor: pointer;
+        }
+        li.has-child.hide-child::after {
+            content: '+';
+        }
+        .container-flex {
+            display: flex;
+            /*padding: 2rem*/
+        }
+        .content-flex {
+            padding: 2rem;
+            flex: 1;
+        }
+        .nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            /*padding-left: 2rem;*/
+            width: 250px;
+            /*background-color: #2196F3;*/
+            background-image: linear-gradient(to bottom, #2196F3, rgba(65, 162, 239, 0.35));
+            color: rgba(255,255,255,.9);
+        }
+        .main-content {
+            margin-left: 250px;
+            /*transform: translate3d(250px,0,0);*/
+        }
+        .function::before {
+            color: blue;
+            content: 'function';
+            padding: 0 5px;
+        }
+        .number::before {
+            color: red;
+            content: 'number';
+            padding: 0 5px;
+        }
+        .string::before {
+            color: brown;
+            content: 'string';
+            padding: 0 5px;
+        }
+        .boolean::before {
+            color: green;
+            content: 'boolean';
+            padding: 0 5px;
+        }
+        .event::before {
+            color: orange;
+            content: 'event';
+            padding: 0 5px;
+        }
+        .object::before {
+            color: violet;
+            content: 'object';
+            padding: 0 5px;
+        }
+
+        .key {
+            display: inline-block;
+            /*width: 20%;*/
+            min-width: 160px
+        }
+        .view:target {
+            display: block;
+        }
+        .view {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container container-flex">
+        <nav class="nav">
+            <ul class="list list-verticle">
+                <li class="list-item"><a href="#home">Home</a></li>
+                <li class="list-item"><a href="#sheet">Sheet</a></li>
+                <li class="list-item"><a href="#validation">Parse Validation</a></li>
+            </ul>
+        </nav>
+        <main class="content-flex main-content">
+            <style>
+                .slide {
+                    width: 100%;
+                    height: 66vw;
+                    line-height: 66vw;
+                    text-align: center;
+                    font-size: 30vw;
+                }
+                .slide1 {
+                    background-image: linear-gradient(to right, rgb(17, 187, 17), yellow);
+                }
+                .slide2 {
+                    background-image: linear-gradient(to right, #f7eded, #4a4949);
+                }
+                .slide3 {
+                    background-image: linear-gradient(to right, #5858ef, #f1c6c6);
+                }
+            </style>
+            <div id="home" class="view">
+                <div class="js-slider-wrapper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide slide slide1">1</div>
+                        <div class="swiper-slide slide slide2">2</div>
+                        <div class="swiper-slide slide slide3">3</div>
+                    </div>
+                </div>
+            </div>
+            <div id="validation" class="view">
+                <textarea id="json_text" id="" cols="30" rows="10" style="width:100%"></textarea>
+                <div id="validate_result"></div>
+            </div>
+            <script>
+                function getType(obj) {
+                    return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
+                }
+                function Validator(config) {
+                    this.value = config.value
+                    this.type = config.type
+                    this.omitable = config.omitable
+                    Object.defineProperty(this, '__validator', {
+                        value: true,
+                        enumberable: false
+                    })
+                }
+                Validator.is = function(obj) {
+
+                    return obj && !!obj.__validator
+                }
+                Validator.prototype.toHtml = function() {
+
+                    return `<select name="" id="">
+                            <option ${this.type == 'string' ? 'selected' : ''} value="string">String</option>
+                            <option ${this.type == 'null'   ? 'selected' : ''} value="null">Null</option>
+                            <option ${this.type == 'number' ? 'selected' : ''} value="number">Number</option>
+                            <option ${this.type == 'boolean'? 'selected' : ''} value="boolean">Boolean</option>
+                            <option ${this.type == 'object' ? 'selected' : ''} value="object">Object</option>
+                        </select>
+                        <span>${this.value}</span>`
+                }
+
+                function outputValidation(obj) {
+                    var result = Object.keys(obj||[]).map(item => {
+                        let value = obj[item];
+                        if (Validator.is(value)) value = value.toHtml();
+                        else value = `<span>${obj[item] ? obj[item] instanceof Array ? 'array' : 'object' : 'null'}</span>` + outputValidation(value);
+                        return `<li class="js-valid-item has-child"><span class="key">${item}</span>${value}</li>`
+                    }).join('\n')
+
+                    return `<ul>${result}</ul>`
+
+                }
+
+                function parseValidation(obj) {
+                    if ('object' !== getType(obj)) return {}
+                    Object.keys(obj).map(item => {
+                        let value = obj[item],
+                            type = getType(value);
+                        if (type === 'object') parseValidation(value)
+                        else {
+                            obj[item] = new Validator({value, type})
+                        }
+                    })
+                    return obj
+                }
+
+                document.querySelector('#json_text').value = localStorage.getItem('parse_text', '{}')
+                document.querySelector('#json_text').addEventListener('input', ({target}) =>{
+                    let jsonText = target.value, json
+                    if (!jsonText) {return true}
+                    try {
+                        json = eval('_____a='+jsonText)
+                        delete window._____a
+                    } catch (e) {
+                        return true
+                    }
+                    let result = parseValidation(json)
+                    localStorage.setItem('parse_text', jsonText)
+                    console.log(result)
+                    document.querySelector('#validate_result').innerHTML = outputValidation(result)
+                    document.querySelector('.js-valid-item').addEventListener('click', e => {
+                        e.target.classList.toggle('hide-child')
+                    })
+                })
+                // document.querySelector('#json_text').change()
+            </script>
+            <li class="js-item has-child hide-child view" id="sheet">window</li>
+            <script>
+                var getKeys = obj=> {
+                    var keys = []
+                    for(var i in obj) keys.push(i)
+                    return keys
+                }
+
+                document.querySelector('.js-item').addEventListener('click', ({target}) => {
+                    if (!target.classList.contains('has-child')) return this
+                    target.classList.toggle('hide-child')
+                    if (target.children.length) return this
+                    var parent = (target.parentElement._parent || window)[target.dataset.item] || window;
+
+                    var tpl = getKeys(parent)
+                    .sort((a,b)=>{
+                        var _a = (typeof parent[a]) + a;
+                        var _b = (typeof parent[b]) + b;
+                        return  _a > _b ? 1 : -1
+                    })
+                    .map(item=>{
+                        var child = parent[item]
+                        var type = typeof child
+                        var hasChild = child && typeof child !== 'string' && getKeys(child).length
+                        // if (typeof child !== 'string') return '';
+                        if (child === null && item.startsWith('on')) {
+                            type = 'event'
+                        }
+                        return `<li class="js-item ${hasChild?'has-child':''} hide-child ${type}" data-item="${item}">${item}${type === 'function' ? '()' : ''}</li>`
+                    }).join('');
+                    if (!tpl) return this;
+                    var list = document.createElement('ul');
+                    list.innerHTML = tpl
+                    list._parent = parent
+                    target.appendChild(list);
+                })
+                // document.querySelector('.js-item').click()
+            </script>
+        </main>
+
+    </div>
+</body>
+<script src="http://npm.yizhi.com/jquery/dist/jquery.min.js"></script>
+<script src="http://npm.yizhi.com/swiper/dist/js/swiper.jquery.min.js"></script>
+<script>
+    $(function() {
+        $(window).on('hashchange', function() {
+            if (location.hash = '#home') $('.js-slider-wrapper').swiper({
+                autoplay: true,
+                speed: 3000,
+                loop: true,
+                effect: 'fade'
+            });
+        })
+    })
+
+    location.hash || (location.href = '#home');
+
+</script>
+</html>
