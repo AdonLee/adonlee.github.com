@@ -52,7 +52,7 @@ function modal(state = defaultModal, action) {
 function list(state = defaultList, action) {
     var {type, data, index} = action;
     var newState = [...state];
-    data && (data.addTime = new Date().toGMTString());
+    data && (data.addTime = new Date().toLocaleString());
     switch(type) {
         case 'add_item':
             data = Object.assign({}, data)

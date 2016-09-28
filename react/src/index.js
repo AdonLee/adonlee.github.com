@@ -34,8 +34,34 @@ import reducer from './reducer';
 //
 //
 //
-let store = createStore(reducer);
-let target = document.querySelector('#container');
+let initState = {
+    list: [
+        {
+            content: '滑翔',
+            author: 'dongge',
+        }, {
+            content: '潜泳',
+            author: 'zhiyan'
+        }, {
+            content: '溜冰',
+            author: 'xuanmu'
+        }
+    ]
+}
+let store = createStore(reducer, initState)
+let target = document.querySelector('#container')
+
+if (module.hot) {
+    // 允许热加载，否则会整个页面刷新
+    module.hot.accept()
+
+    // Enable Webpack hot module replacement for reducers
+    module.hot.accept('./', () => {
+      const nextRootReducer = require('./reducer');
+      store.replaceReducer(nextRootReducer);
+    });
+}
+
 render(
     <Provider store={store}>
         <App>你好</App>

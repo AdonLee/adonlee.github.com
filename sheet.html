@@ -4,120 +4,74 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="http://npm.yizhi.com/swiper/dist/css/swiper.min.css">
-    <style>
-        body {
-            margin: 0;
-        }
-        * {
-            box-sizing: border-box;
-        }
-        .hide-child > ul {
-            display: none;
-        }
-        .list {
-            list-style:none;
-            font-size: 2rem;
-            padding: 0rem;
-        }
-        .list-item {
-            line-height: 4rem;
-            height: 4rem;
-            padding: 0 1rem;
-            border-bottom: 1px solid;
-        }
-        .list-item:hover {
-            background-color: #005eb1;
-        }
-        li {
-            cursor: text;
-        }
-        li.has-child {
-            cursor: pointer;
-        }
-        li.has-child.hide-child::after {
-            content: '+';
-        }
-        .container-flex {
-            display: flex;
-            /*padding: 2rem*/
-        }
-        .content-flex {
-            padding: 2rem;
-            flex: 1;
-        }
-        .nav {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            /*padding-left: 2rem;*/
-            width: 250px;
-            /*background-color: #2196F3;*/
-            background-image: linear-gradient(to bottom, #2196F3, rgba(65, 162, 239, 0.35));
-            color: rgba(255,255,255,.9);
-        }
-        .main-content {
-            margin-left: 250px;
-            /*transform: translate3d(250px,0,0);*/
-        }
-        .function::before {
-            color: blue;
-            content: 'function';
-            padding: 0 5px;
-        }
-        .number::before {
-            color: red;
-            content: 'number';
-            padding: 0 5px;
-        }
-        .string::before {
-            color: brown;
-            content: 'string';
-            padding: 0 5px;
-        }
-        .boolean::before {
-            color: green;
-            content: 'boolean';
-            padding: 0 5px;
-        }
-        .event::before {
-            color: orange;
-            content: 'event';
-            padding: 0 5px;
-        }
-        .object::before {
-            color: violet;
-            content: 'object';
-            padding: 0 5px;
-        }
-
-        .key {
-            display: inline-block;
-            /*width: 20%;*/
-            min-width: 160px
-        }
-        .view:target {
-            display: block;
-        }
-        .view {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="//bower.yizhi.com/bootstrap3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//bower.yizhi.com/swiper/dist/css/swiper.min.css">
 </head>
 <body>
-    <div class="container container-flex">
-        <nav class="nav">
-            <ul class="list list-verticle">
-                <li class="list-item"><a href="#home">Home</a></li>
-                <li class="list-item"><a href="#sheet">Sheet</a></li>
-                <li class="list-item"><a href="#validation">Parse Validation</a></li>
-            </ul>
-        </nav>
+    <div class="navbar navbar-transparent">
+        <div class="container-fluid">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#sheet">Sheet</a></li>
+                    <li><a href="#validation">Parse Validation</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
         <main class="content-flex main-content">
+        <section id="reel-expand">
+            <style>
+                @keyframes reel-expand-left {
+                    0% {
+                        transform: translateX(50vw);
+                    }
+
+                    100% {
+                        transform: translateX(0px);
+                    }
+                }
+                @keyframes reel-expand-right {
+                    0% {
+                        transform: translateX(50vw);
+                    }
+
+                    100% {
+                        transform: translateX(345px);
+                    }
+                }
+                .reel-expand {
+                    height: 150px;
+                    width: 100%;
+                    background-color: beige;
+                }
+                .reel-expand::before, .reel-expand::after {
+                    content: '';
+                    display: inline-block;
+                    height: 100%;
+                    width: 30px;
+                    background-color: red;
+                    position: relative;
+                }
+                .reel-expand::before {
+                    /*margin-left: -30px;*/
+                    /*transform: translateX(50%);*/
+                    animation: reel-expand-left 3s ease-in-out;
+                }
+                .reel-expand::after {
+                    transform: translateX(345px);
+                    animation: reel-expand-right 3s ease-in-out;
+                }
+
+            </style>
+            <div class="reel-expand" style="width: 100%"></div>
+        </section>
+        <section id="home">
             <style>
                 .slide {
-                    width: 100%;
+                    /*width: 100%;*/
                     height: 66vw;
                     line-height: 66vw;
                     text-align: center;
@@ -133,7 +87,7 @@
                     background-image: linear-gradient(to right, #5858ef, #f1c6c6);
                 }
             </style>
-            <div id="home" class="view">
+            <div class="view row">
                 <div class="js-slider-wrapper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide slide slide1">1</div>
@@ -142,7 +96,10 @@
                     </div>
                 </div>
             </div>
-            <div id="validation" class="view">
+        </section>
+
+        <section id="validation">
+            <div class="view">
                 <textarea id="json_text" id="" cols="30" rows="10" style="width:100%"></textarea>
                 <div id="validate_result"></div>
             </div>
@@ -220,6 +177,9 @@
                 })
                 // document.querySelector('#json_text').change()
             </script>
+        </section>
+
+        <section>
             <li class="js-item has-child hide-child view" id="sheet">window</li>
             <script>
                 var getKeys = obj=> {
@@ -258,25 +218,29 @@
                 })
                 // document.querySelector('.js-item').click()
             </script>
+        </section>
         </main>
 
     </div>
 </body>
-<script src="http://npm.yizhi.com/jquery/dist/jquery.min.js"></script>
-<script src="http://npm.yizhi.com/swiper/dist/js/swiper.jquery.min.js"></script>
+<script src="//npm.yizhi.com/jquery/dist/jquery.min.js"></script>
+<script src="//bower.yizhi.com/swiper/dist/js/swiper.jquery.min.js"></script>
 <script>
     $(function() {
-        $(window).on('hashchange', function() {
-            if (location.hash == '#home') $('.js-slider-wrapper').swiper({
-                autoplay: true,
-                speed: 3000,
-                loop: true,
-                effect: 'fade'
-            });
-        })
-    })
+        var _swiper;
+        function initSwiper() {
+            if (location.hash == '#home')
+                _swiper = _swiper || $('.js-slider-wrapper').swiper({
+                    autoplay: true,
+                    speed: 3000,
+                    loop: true,
+                    effect: 'slide'
+                });
+        }
+        initSwiper()
+        $(window).on('hashchange', initSwiper)
 
-    location.hash || (location.href = '#home');
+    })
 
 </script>
 </html>

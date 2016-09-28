@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .fade-transition {
+            transition: opacity .5s ease, height 1s ease;
+            overflow: hidden;
+            /*opacity: 0*/
+        }
+        .fade-enter, .fade-leave {
+            opacity: 0;
+            height: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart_wrapper">
+        <ul>
+            <li v-for="item in cart_items">
+                <input type="checkbox" name="" id="" value="{{* item.id}}" v-model="item.checked" @change="itemChange($event)">
+                <p>{{* item.product_name}}</p>
+                <input type="number" name="" id="" v-model="item.quantity">
+                <span>{{* item.unit_price}}</span>
+            </li>
+        </ul>
+        <div v-show="isKJG" transition="fade">
+            <div>
+                <label for="">姓名</label>
+                <input type="text" name="name" v-model="identify.name">
+            </div>
+            <div>
+                <label for="">身份证</label>
+                <input type="text" name="id_number" v-model="identify.id_number">
+            </div>
+            <div>
+                <label for="">邮箱</label>
+                <input type="text" name="email" v-model="identify.email">
+            </div>
+        </div>
+        <select name="" v-model="couponIndex">
+            <option value="-1">不使用</option>
+            <template v-for="(index, coupon) in coupons">
+            <option value="{{* index}}" v-text="coupon | getCouponText"></option>
+            </template>
+        </select>
+        <div>
+            <p v-show="couponIndex > -1" transition="fade">代金券：-{{coupons[couponIndex].amount}}</p>
+            <p>总额：{{total}}</p>
+        </div>
+    </div>
+</body>
+<script src="//bower.yizhi.com/vue/dist/vue.min.js"></script>
+<script src="./cart.js"></script>
+<script>
+    console.log(cartData);
+    Vue.filter('getCouponText', function(coupon) {
+        return `${coupon.coupon_name}-${coupon.coupon_type}-${coupon.intro}`;
+    })
+    // Vue.transition('fade', {
+    //   css: false,
+    //   enter: function (el, done) {
+    //     // 元素已被插入 DOM
+    //     // 在动画结束后调用 done
+    //     $(el)
+    //       .css('opacity', 0)
+    //       .animate({ opacity: 1 }, 1000, done)
+    //   },
+    //   enterCancelled: function (el) {
+    //     $(el).stop()
+    //   },
+    //   leave: function (el, done) {
+    //     // 与 enter 相同
+    //     $(el).animate({ opacity: 0 }, 1000, done)
+    //   },
+    //   leaveCancelled: function (el) {
+    //     $(el).stop()
+    //   }
+    // })
+    // var
+    var vm = new Vue({
+        el: '#cart_wrapper',
+        data: Object.assign(cartData, {
+            couponIndex: -1
+        }),
+        methods: {
+            itemChange: function(event) {
+                console.log(event.target.value);
+            },
+            isBusiTypeOf: function(type) {
+                var cart_items = this.cart_items.filter(item=> item.checked)
+
+                for (var i = 0, l = cart_items.length; i < l; ++i) {
+                    if (cart_items[i].business_type == type) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        },
+        computed: {
+            total: function () {
+                var productValue = this.cart_items
+                    .filter(item=> item.checked)
+                    .map(item => +item.unit_price * item.quantity)
+                    .reduce((item1, item2) => item1 + item2)
+                if (!productValue) return 0;
+                if (this.couponIndex > -1) {
+                    var couponValue = + this.coupons[this.couponIndex].amount
+                    productValue -= couponValue
+                    if (productValue < 0) productValue = 0
+                }
+                return productValue
+            },
+            isKJG: function() {
+                return this.isBusiTypeOf('kuajing')
+            },
+            isOversea: function() {
+                return this.isBusiTypeOf('oversea')
+
+            }
+        }
+    })
+</script>
+</html>

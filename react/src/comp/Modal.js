@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 class Modal extends Component {
 
@@ -45,4 +46,10 @@ class Modal extends Component {
     }
 }
 
-export default Modal;
+function mapState2Props(state) {
+    return {
+
+    }
+}
+
+export default connect(mapState2Props)(Modal);

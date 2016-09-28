@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Angular 1.x Index</title>
+</head>
+<body
+    ng-app="myApp"
+    ng-strict-di="禁止隐式依赖注入"
+>
+    <div ng-controller="IndexController">
+
+        <input type="text" ng-model="name"><br>
+        <!-- 插值绑定 -->
+        <p>插值绑定：{{title}}</p>
+        <!-- 输出标签 -->
+        <p>输出标签：<span ng-bind-html="desc"></span></p>
+        <!-- 属性绑定 -->
+        <p>属性绑定：<span ng-bind="name"></span></p>
+        <!-- 以::开头只绑定一次 -->
+        <p>单次绑定：<span ng-bind="::name"></span></p>
+        <!-- 过滤器只会在只改变才执行 -->
+        <p>使用过滤器：<span ng-bind="name | capitalize"></span></p>
+        <p>过滤器+参数：<span ng-bind="name | capitalize:true"></span></p>
+
+
+        <section>
+            <h2>moudle.directive</h2>
+            <input type="checkbox" ng-model="showUserInfo">
+            <user-Info ng-if="showUserInfo" user-name="'yizhi'" age="23" gender="user.gender" say-hi="'alert(\'skdfds\')'">这里是某些跟屁虫</user-Info>
+        </section>
+
+        <form name="myform" action="" novalidate> <!-- disable browser's native form validation -->
+            <h2>form</h2>
+            <span ng-show="myform.$submitted">this form is submitted</span>
+            <span ng-hide="myform.$submitted">this form is not submitted</span>
+            <h3>input[text | number | url | email | date | radio | checkbox]</h3>
+            <p>验证标志：<span>myform.myemail.$error.[required | pattern | minlength | maxlength | max | min]</span>   </p>
+            </section>
+                <h3>input:text</h3>
+                <input type="text" name="user_name" ng-model="user.name" maxlength="50" required >
+                <span ng-show="myform.user_name.$error.maxlength">名字长度应小于50</span>
+                <span ng-show="myform.user_name.$error.required">名字不能为空</span>
+            <section>
+            <section>
+                <h3>input:email</h3>
+                <!-- ngModel双向数据绑定 -->
+                <input
+                    type="email"
+                    ng-model="user.email"
+                    ng-model-options="{debounce: 500, updateOn: 'default blur'}"
+                    name="user_email"
+                    required="">
+                <!-- 验证标识 -->
+                <span ng-show="myform.user_email.$error.required">请输入邮箱</span>
+                <span ng-show="myform.user_email.$error.email">邮箱格式错误</span>
+                <span ng-hide="myform.user_email.$error.email || myform.user_email.$error.required">邮箱格式正确</span>
+            </section>
+                <h3>input:number</h3>
+                <input type="number" name="user_age" ng-model="user.age" max="100" min="18" id="">
+                <span ng-show="myform.user_age.$error.max">建国后不许成精</span>
+                <span ng-show="myform.user_age.$error.min">十八禁</span>
+                <span ng-hide="myform.user_age.$error.max || myform.user_age.$error.min">终于来个正常的</span>
+            <section>
+
+            </section>
+            <section>
+                <h3>input:radio</h3><a href="/{user.name}"></a>
+                <!-- 由于绑定了model,变成了受控控件，checked属性失效，应通过初始值控制 -->
+                <input type="radio" ng-model="user.gender" name="gender" value="female" checked>
+                <input type="radio" ng-model="user.gender" name="gender" value="male">
+                <span ng-bind="user.gender"></span>
+            </section>
+            <section>
+                <h3>input:checkbox</h3>
+                <input type="checkbox" ng-model="habit[0]" name="habit" value="'football'">
+                <input type="checkbox" ng-model="habit[1]" name="habit" value="'tennis'">
+                <span ng-bind="habit|json"></span>
+            </section>
+            <section>
+                <h3>布尔属性</h3>
+                <!-- 标准html disabled checked之类布尔属性，属性值会被忽略，这里用ng-disabled代替     -->
+                <button type="button"
+                    ng-click="onClick()"
+                    ng-disabled="agree"
+                    ng-bind="agree?'不可点击':'可点击'">ok</button>
+                <input type="checkbox" ng-model="agree" name="agree" id="" value="chk1">
+                clickTimes: <span ng-bind="times"></span>
+            </section>
+        </form>
+    </div>
+</body>
+<script src="//bower.yizhi.com/angular/angular.js"></script>
+<script>
+    // $sce: strict contextual escaping 严格上下文模式，用于html安全绑定
+    function IndexController($scope, $sce) {
+        $scope.name = 'dongge'
+        $scope.title = 'title'
+        $scope.desc = $sce.trustAsHtml('<span style="color: red">$sce.trustAsHtml()</span>')
+        $scope.count = 0
+        $scope.times = 0
+        $scope.user = {
+            name: 'yizhi',
+            gender: 'female',
+            age: 10,
+            habit: ['football', 'tennis']
+        }
+        var deep = false;
+        // 监听属性变化
+        $scope.$watch('name', function(newVal, oldVal) {
+            $scope.count++;
+        }, deep)
+        // 监听对象、数组属性变化
+        $scope.$watchCollection('name', function(newVal, oldVal) {
+            $scope.count++;
+        })
+        // 监听广播事件
+        $scope.$on('myEvent', function() {
+
+        })
+
+        $scope.onClick = function() {
+            $scope.times++
+        }
+
+        setTimeout(function() {
+            $scope.title += '-async'
+            // 此处脱离angular执行环境，修改不会触发更新
+            // 需手动触发$digest
+            $scope.$apply()
+
+            // 或者作为执行函数传入
+            setTimeout(function() {
+                $scope.$apply(function() {
+                    $scope.title += '-function'
+                })
+            }, 1000)
+        }, 1000);
+
+        $scope.$watch('agree', function(val) {
+            // console.log(val);
+        })
+        // $scope.$destroy()
+    }
+
+    // 如果没有ngApp指令，angular不会自动初始化，需手动初始化
+    // angular.bootstrap(container, [controller])
+    var app = angular.module('myApp', [])
+    // .config(function($provider, $compileProvider, $filterProvider) {
+    //     $provider.value('a', 123)
+    //     $provider.factory('a', function() {})
+    //     $provider.decorator('a', function() {})
+    //     $compileProvider.directive('directivename', function() {})
+    //     $filterProvider.register('filtername', function() {})
+    //     $compileProvider.debugInfoEnabled(false)
+    //     $compileProvider.commentDirectivesEnabled(false)
+    //     $compileProvider.cssClassDirectivesEnabled(false);
+    // })
+    // .provider('a', factoryFn)   // {$get} => new factoryFn(), a = $get()
+    //
+    // // object available in config phase
+    // // A run block is the code which needs to run to kickstart the application
+    // // run after config and injector has been created
+    // .run(block)
+    // // same as `$provider.constant`
+    .constant('PI', 3.1415)
+    // same as `$provider.value`
+    .value('name', 'yizhi')
+    // // 三种依赖注入方式 1 $inject Property Annotation
+    // IndexController.$inject = ['$scope']
+    // app.controller('IndexController', IndexController)
+    // // 三种依赖注入方式 2 Inline Array Annotation
+    app.controller('IndexController', ['$scope', '$sce', IndexController])
+    // // 三种依赖注入方式 3, Implicit Annotation
+    // // 自动根据工厂函数形参识别依赖，这种方式如果代码被压缩，可能出错
+    // .controller('IndexController', IndexController)
+    //
+    // // 过滤器
+    // // 过滤器也是一种服务，可以作为依赖注入到其他工厂函数
+    // `module.filter('filtername', factoryFn)`
+    // same as `$filterProvider.register`
+    .filter('capitalize', function() {
+        return function(str, reverse) {
+            // console.log(str);
+            if (!str) return ''
+            if (reverse) {str = str.split('').reverse().join('')}
+            return str.slice(0, 1).toUpperCase() + str.slice(1);
+        }
+    })
+
+    // 装饰过滤器需添加Filter后缀
+    // 装饰directive需添加Directive后缀
+    // 装饰service无需添加后缀
+    // 装饰capitalize过滤器,
+    // .decorator('$log',[$delegate, factoryFn] ) // $log => factoryFn($delegate)
+    // same as `$provider.decorator`
+    app.decorator('capitalizeFilter', ['$delegate', 'consoleFactory', function ($delegate, consoleFactory) {
+        return function(str, reverse=false) {
+            var result = $delegate.apply(null, arguments)
+            consoleFactory.log('capitalize', str, reverse, result);
+            return result
+        };
+    }])
+    // provider 的特殊之处就是可以在 module 启动时进行配置， 从而达到特殊的用途
+    // mypro = new contructor().$get()
+    .provider('mypro', function() {
+        this.$get = function() {
+            return {
+                sayHi: function() {
+                    console.log('Hi, this is Provider mypro');
+                }
+            }
+        }
+    })
+    // .service(identifier, constructor)
+    .service('consoleService', function () {
+        this.log = function() {
+            console.log('by consoleService.log');
+            console.log.apply(console, arguments)
+        }
+        this.warn = function() {
+            console.log('by consoleService.warn');
+            console.warn.apply(console, arguments)
+        }
+    })
+    // `module.factory(identifier, factoryFn)`
+    // same as `$provider.factory`
+    // factory方法注册的service是注册函数的执行结果
+    // service方法注册的service是用注册函数构造的实例
+    .factory('consoleFactory', function () {
+        return {
+            log: function() {
+                console.log('by consoleFactory.log');
+                console.log.apply(console, arguments)
+            },
+            warn: function() {
+                console.log('by consoleFactory.warn');
+                console.warn.apply(console, arguments)
+            }
+        };
+    })
+
+    .animation('.animation', function() {
+        return {
+            enter: function(element, done) {
+                return function(isCancelled) {}
+            },
+            leave: function(element, done) {
+                return function(isCancelled) {}
+            },
+            move: function(element, done) {
+                return function(isCancelled) {}
+            },
+            // you can also capture these animation events
+            addClass : function(element, className, done) {},
+            removeClass : function(element, className, done) {}
+        };
+    })
+
+    // same as `$compilerProvider.directive`
+    .directive('userInfo', ['$http', function($http) {
+        return {
+            // 引入外部控制器 require the controllers of other directives to enable communication between each other
+            // ？: nullable
+            // [?]^:       searches on its own element or its parents
+            // [?]^^:      searches on its parents
+            // 没有前缀： searches on its own element only
+            // require: '^^myCtl',
+            // 限制指令出现的位置，默认AE
+            // A: 匹配元素名
+            // E: 匹配属性名
+            // C: 匹配类名
+            // M: 匹配注释
+            restrict: 'AE',
+            // 指定独立scope,隔离父scope
+            scope: {
+                // 1.键和值相同则值可以省略，只需指明绑定方式
+                // 2.属性名会被格式化为camel-case
+                // bind a local scope property to the value of DOM attribute `title`.
+                title: "@",
+                // set up a bidirectional binding between a local scope property and an expression passed via the attribute `userName`,
+                name: "=userName",
+                // set up a one-way (one-directional) binding between a local scope property and an expression passed via the attribute `gender`.
+                gender: "<",
+                // provides a way to execute an expression in the context of the parent scope
+                say: "&sayHi",
+                age: "=",  // 同"=age"
+            },
+            // 是否保留指令内部的元素，默认false, 保留位置由模板里的ngTransclude指令指定
+            transclude: true,
+            // [DEPRECATED!] Replace the directive element
+            replace: false,
+            // 指定模板内容
+            template: '<p>Name: <span ng-bind="name"></span> - {{gender}} - {{age}} - {{title}} - <span ng-transclude></span></p>',
+            // 指定模板文件，适用于较大的模板，
+            // templateUrl: './userinfo.html',
+            // templateUrl: function(elem /*指令元素*/, attr/*指令元素属性*/) {
+            //     return './userInfo.html'
+            // },
+            // 模板渲染后，绑定指令逻辑前
+            // combine the directives with a scope and produce a live view.
+            link: function(
+                scope, /* an Angular scope object */
+                element, /* the jqLite-wrapped element that this directive matches */
+                attrs, /* normalized attribute Object */
+                controller, /* require配置项指定的控制器实例，如果指定多个则为数组 */
+                transcludeFn /* a transclude linking function pre-bound to the correct transclusion scope */
+                           ) {
+                // console.log(scope, attrs, attrs.$$element === element);
+                element.on('$destroy', function() {
+                    console.log('destroy event on element');
+                    // 元素销毁时回调
+                })
+                scope.$on('$destroy', function() {
+                    console.log('destroy event on scope');
+
+                })
+            },
+            // bindToController: false,
+            // traverse the DOM and collect all of the directives
+            // compile: function() {},
+            // controller: function() {},
+            //
+            // 实例化controller并绑定到$scope.alias上
+            // controllerAs: 'alias' ,
+            // multiElement: ,
+            // priority: ,
+            // templateNamespace: ,
+            // terminal: ,
+        }
+    }])
+
+    .component('myComponent', {
+        templateUrl: './myComponent.html',
+        controller: function($scope, $element, $attrs) {
+
+        },
+        bindings: {
+            name: '<', // one-way binding
+            age: '@', // be used when the input is a string, especially when the value of the binding doesn't change.
+            onUpdate: '&' // binding function as callbacks to component events
+        },
+        controllerAs: '$ctrl', // $scope.$ctrl = new controller()
+        // require: "",
+        // template: ,
+        // transclude: false,
+
+        // Comparison between Directive definition and Component definition
+        // * bindToController: use bindings instead,
+        // * compile: ,
+        // * link: ,
+        // * multiElement: ,
+        // * priority: ,
+        // * restrict: restricted to elements only,
+        // * scope: scope is always isolate, use `bindings` instead
+        // * templateNamespace: ,
+        // * terminal: ,
+    })
+</script>
+</html>

@@ -8,10 +8,10 @@ class CountDown extends Component {
     // arrayOf(),instanceOf(),objectOf(),oneOf([values]),oneOfType([types]),shape({})]
     // customProp: function(props, propName, componentName)
     static propTypes = {
-        servertime: React.PropTypes.number, // 验证servertime为数字类型
-        endtime: React.PropTypes.number, // 验证endtime为数字类型
-        children: React.PropTypes.string
-        // servertime: React.PropTypes.number.isRequired // 不可空
+        servertime: PropTypes.number, // 验证servertime为数字类型
+        endtime: PropTypes.number, // 验证endtime为数字类型
+        children: PropTypes.string
+        // servertime: PropTypes.number.isRequired // 不可空
     };
 
     static childContextTypes = {

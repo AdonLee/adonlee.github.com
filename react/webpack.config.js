@@ -2,9 +2,11 @@
 var webpack = require('webpack');
 module.exports = {
     // The standard entry point and output config
-    entry: "./src/index.js",
+    entry: {
+        app: ["./src/index.js"]
+    },
     output: {
-        path: "dist",
+        path: require("path").resolve("dist"),
         filename: "app.js"
     },
     resolve: {
@@ -37,12 +39,14 @@ module.exports = {
                 test: /\.html$/, loader: "html?attrs=link:href"
             },
             {
-                test: /\.js/, loader: "babel"
+                test: /\.js/,
+                exclude: /node_modules/,
+                loaders: ["babel"]
             }
             // You could also use other loaders the same way. I. e. the autoprefixer-loader
         ]
     },
-    // devtool: 'source-map',
+    devtool: 'source-map',
     // Use the plugin to specify the resulting filename (and add needed behavior to the compiler)
     plugins: [
         new webpack.DefinePlugin({
@@ -52,7 +56,6 @@ module.exports = {
             TWO: "1+1",
             "typeof window": JSON.stringify("object")
         })
-
         // ,new webpack.optimize.UglifyJsPlugin({
         //     compress: {
         //         warnings: false
