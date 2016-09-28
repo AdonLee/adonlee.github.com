@@ -1,7 +1,8 @@
 var jsdom = require('jsdom')
 var path = require('path')
 var chapterInfo = require('./chapterInfo.json')
-var novelIdList = [635, 3590, 168, 3598, 285]
+var novelIdList = Object.keys(chapterInfo)
+novelIdList = novelIdList.length ? novelIdList : [635, 3590, 168, 3598, 285]
 var file = process.argv[1]
 var filePath = path.dirname(path.resolve(process.cwd(), file))
 
