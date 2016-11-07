@@ -1,10 +1,18 @@
 const koa = require('koa')
+const router = require('koa-router')();
 
 let app = koa()
-app.use(function *(next) {
-    let visitCount = 1
-    
-    this.body =  'hello world'
+
+router.get('/', function*(next) {
+
+    this.body = 'hello world'
+    var type = typeof this.cookies.keys
+    var cs = Object.keys(this.cookies.keys)
+    yield next
+    console.log('%s %s', this.method, this.url);
 })
 
-app.listen(54321)
+app.use(router.routes())
+
+app.listen(3000)
+console.log('listen on 3000')

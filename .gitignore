@@ -8,3 +8,5 @@ node_modules
 .tmproj
 dist
 *.log
+self
+novel/book

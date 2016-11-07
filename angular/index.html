@@ -25,6 +25,8 @@
     ng-app="myApp"
     ng-strict-di="禁止隐式依赖注入"
 >
+    <input type="text" ng-model="xxxx">
+    <input type="text" ng-model="xxxx">
     <div ng-controller="IndexController">
 
         <input type="text" ng-model="name"><br>
@@ -84,7 +86,7 @@
             <section>
                 <h3>input:radio</h3><a href="/{user.name}"></a>
                 <!-- 由于绑定了model,变成了受控控件，checked属性失效，应通过初始值控制 -->
-                <input type="radio" ng-model="user.gender" name="gender" value="female" checked>
+                <input type="radio" ng-model="user.gender" name="gender" value="female">
                 <input type="radio" ng-model="user.gender" name="gender" value="male">
                 <span ng-bind="user.gender"></span>
             </section>

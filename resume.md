@@ -1,5 +1,5 @@
 
-### 李策东 男 2年工作经验 本科
+### 李策东 男 3年工作经验 本科
 
 <!-- <img src="http://static.yizhi.com/img/cd/20150224_1*1.jpg" style="float:left;margin-right:50px;width:150px;border-radius: 50%" alt=""> -->
 

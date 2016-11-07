@@ -32,7 +32,7 @@ class App extends Component{
 
         return (<div>
             <table className="table table-striped">
-            <caption>TODO LIST<button className="glyphicon glyphicon-plus pull-right"></button></caption>
+            <caption>TODO LIST<button className="glyphicon glyphicon-plus pull-right" onClick=""></button></caption>
             <tbody>
                 {list.map((item, index) =>
                 <tr key={index} className="">
