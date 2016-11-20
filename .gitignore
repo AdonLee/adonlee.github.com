@@ -9,4 +9,5 @@ node_modules
 dist
 *.log
 self
-novel/book
+**/book
+vendor

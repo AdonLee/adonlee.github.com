@@ -5,15 +5,18 @@ if (process.cwd() !== __dirname) {
 var jsdom = require('jsdom')
 var fs = require('fs')
 var path = require('path')
-var chapterInfo = require('./chapterInfo.json')
 var childProcess = require('child_process')
+var bookVault = '../data/book';
+var logPath = path.resolve(bookVault, 'check.log');
+var chapterInfoPath = path.resolve(bookVault, 'chapterInfo.json')
+var chapterInfo = require(chapterInfoPath)
 var novelIdList = Object.keys(chapterInfo)
 
 ;
 (function() {
 
     // record for summary
-    fs.writeFileSync('./check.log', '\n' + new Date().toISOString(), { flag: 'a' })
+    fs.writeFileSync(logPath, '\n' + new Date().toISOString(), { flag: 'a' })
 
     novelIdList = novelIdList.length ? novelIdList : [635, 3590, 168, 3598, 285]
 
@@ -44,7 +47,7 @@ function checkUpdate() {
 
     // update novel list page
     fs.writeFileSync(
-        'book/index.html',
+        path.resolve(bookVault, 'index.html'),
         `<title>Novel List</title><div style="width:650px;margin:50px auto">
             <body style="background:ivory">
                 <h2>Novel List</h2>
@@ -56,7 +59,7 @@ function checkUpdate() {
     // Update novel info
     console.log('write to chapterInfo.json');
     fs.writeFileSync(
-        './chapterInfo.json',
+        chapterInfoPath,
         JSON.stringify(chapterInfo, null, 4)
     )
 
@@ -82,7 +85,7 @@ function scrabChapterList(novel) {
             console.warn(`Novel ${novelName} - ${$chapter.text()} - ${chapterUrl} 有更新`)
 
             // creat the novel directory if not exists
-            var bookDir = path.resolve('book', novel)
+            var bookDir = path.resolve(bookVault, novel)
             if (!fs.existsSync(bookDir))
                 fs.mkdirSync(bookDir)
 
@@ -151,7 +154,7 @@ function scrabChapterDetail(href) {
         if (!text) return console.log('Empty Chapter: ' + chapterName);
         var navText = $('.bottem2 a')
             .toArray()
-            .filter(a => a.pathname.indexOf('book') > -1)
+            .filter(a => a.pathname.indexOf(bookVault) > -1)
             .map(a => {
                 var href = a.pathname.split('/').pop() || 'index.html';
                 return `<a href="${href}">${a.textContent}</a>`
@@ -169,7 +172,8 @@ function scrabChapterDetail(href) {
             </div>
         </body>`
 
-        var savePath = win.location.pathname.slice(1)
+        // cut '/book/'
+        var savePath = path.resolve(bookVault, win.location.pathname.slice(6))
 
         fs.writeFileSync(savePath, content)
 

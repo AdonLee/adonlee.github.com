@@ -1,0 +1,12 @@
+
+.loading {
+    width: 200px;
+    height: 200px;
+    vertical-align: middle;
+    margin: 0 auto;
+    text-align: center;
+    background-size: cover;
+}
+.loading-ring {
+    background-image: url('../img/icon/loading_ring.svg')
+}
