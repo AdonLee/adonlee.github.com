@@ -1,5 +1,8 @@
+var verbose = process.argv.indexOf('-v') > -1 || process.argv.indexOf('--version') > -1
+var debug = process.execArgv.join('').indexOf('--debug-brk') > -1
+
 if (process.cwd() !== __dirname) {
-    console.log(`Change from ${process.cwd()} to ${__dirname}`)
+    verbose && console.log(`Change from ${process.cwd()} to ${__dirname}`)
     process.chdir(__dirname)
 }
 var jsdom = require('jsdom')
@@ -7,8 +10,8 @@ var fs = require('fs')
 var path = require('path')
 var childProcess = require('child_process')
 var bookVault = '../data/book';
-var logPath = path.resolve(bookVault, 'check.log');
-var chapterInfoPath = path.resolve(bookVault, 'chapterInfo.json')
+var logPath = path.join(bookVault, 'check.log');
+var chapterInfoPath = path.join(bookVault, 'chapterInfo.json')
 var chapterInfo = require(chapterInfoPath)
 var novelIdList = Object.keys(chapterInfo)
 
@@ -16,9 +19,9 @@ var novelIdList = Object.keys(chapterInfo)
 (function() {
 
     // record for summary
-    fs.writeFileSync(logPath, '\n' + new Date().toISOString(), { flag: 'a' })
+    debug || fs.writeFileSync(logPath, '\n' + new Date().toISOString(), { flag: 'a' })
 
-    novelIdList = novelIdList.length ? novelIdList : [635, 3590, 168, 3598, 285]
+    novelIdList = novelIdList.length ? novelIdList : [635, 3590, 168, 3598, 285, 18923]
 
     checkUpdate()
 })()
@@ -57,7 +60,7 @@ function checkUpdate() {
     )
 
     // Update novel info
-    console.log('write to chapterInfo.json');
+    verbose && console.log('write to chapterInfo.json');
     fs.writeFileSync(
         chapterInfoPath,
         JSON.stringify(chapterInfo, null, 4)
@@ -109,8 +112,7 @@ function scrabChapterList(novel) {
                         <h3>${author}</h3>
                         <ol>\n${chapterListText}\n</ol>
                     </div>
-                </body>
-                `
+                </body>`
             )
 
             if (newLen - oldLen > 5) oldLen = newLen - 5;
@@ -118,6 +120,9 @@ function scrabChapterList(novel) {
             for (var i = oldLen; i < newLen; i++) {
                 scrabChapterDetail($chapters.eq(i).prop('href'))
             }
+
+            // update nav of lastest chapter when chapterList updated
+            scrabChapterDetail(chapter.href, true)
 
 
             chapterInfo[novel] = {
@@ -135,7 +140,7 @@ function scrabChapterList(novel) {
             oldLen = newLen - 1
         } else {
             novelName = novelName + ' '.repeat(10 - novelName.length * 2)
-            console.log(`Novel ${novelName} - ${new Date(chapter.time||null).toISOString()} - 最新 ${chapter.last}`);
+            verbose && console.log(`Novel ${novelName} - ${new Date(chapter.time||null).toISOString()} - 最新 ${chapter.last}`);
         }
 
         // setTimeout(checkUpdate, 5000);
@@ -143,7 +148,7 @@ function scrabChapterList(novel) {
     })
 }
 
-function scrabChapterDetail(href) {
+function scrabChapterDetail(href, justUpdate) {
     scrab(href, function(err, win, $) {
         if (err) return
 
@@ -151,33 +156,49 @@ function scrabChapterDetail(href) {
 
         $('#content').find('script').remove()
         var text = $('#content').html().trim()
-        if (!text) return console.log('Empty Chapter: ' + chapterName);
-        var navText = $('.bottem2 a')
+
+        if (!text) return verbose && console.log('Empty Chapter: ' + chapterName);
+
+        text = text.split('<br><br>').slice(0, -1)
+            .join('</p>\n<p>').replace(/&nbsp;/g, '')
+
+        var navList = $('.bottem1 a')
             .toArray()
-            .filter(a => a.pathname.indexOf(bookVault) > -1)
-            .map(a => {
-                var href = a.pathname.split('/').pop() || 'index.html';
-                return `<a href="${href}">${a.textContent}</a>`
-            })
+            .filter(a => a.pathname.indexOf('/book/') > -1)
+            .map(a => ({ href: a.pathname.split('/').pop() || 'index.html', title: a.textContent }))
+
+        var navText = navList
+            .map(nav => `<a href="${nav.href}">${nav.title}</a>`)
+            .concat(`<a href="${href}">源网址</a>`)
             .join('\t\n')
 
         var content = `<title>${chapterName}</title>
+        <style>p{text-indent:1.2em}</style>
+        <script>
+        document.onkeyup = function(e){
+            var href = ({
+                37: '${navList[0].href}',
+                39: '${navList[2].href}'
+            })[e.keyCode]
+            if (href) location.href = href
+        }
+        </script>
         <body style="background:ivory">
-            <div style="width:650px;margin:50px auto">
+            <div style="width:650px;margin:50px auto;">
                 <nav>${navText}</nav>
                 <h2>${chapterName}</h2>
-                ${text}
+                <p>${text}</p>
                 <p>
                 <nav>${navText}</nav>
             </div>
         </body>`
 
         // cut '/book/'
-        var savePath = path.resolve(bookVault, win.location.pathname.slice(6))
+        var savePath = path.join(bookVault, win.location.pathname.slice(6))
 
         fs.writeFileSync(savePath, content)
 
-        childProcess.exec(`open http://project.yizhi.com/yizhi/novel/${savePath}`)
+        justUpdate || childProcess.exec(`open http://project.yizhi.com/yizhi/data/${savePath}`)
 
     })
 }

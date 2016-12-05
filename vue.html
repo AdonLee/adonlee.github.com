@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
@@ -9,20 +10,38 @@
             overflow: hidden;
             /*opacity: 0*/
         }
-        .fade-enter, .fade-leave {
+
+        .fade-enter,
+        .fade-leave {
             opacity: 0;
             height: 0;
         }
+        .list-group-item {
+            display: flex !important;
+        }
+        .list-group-item:first-child {
+            width: 40px
+        }
+        .list-group-item:first-child ~ div {
+            flex: 1;
+        }
     </style>
 </head>
+
 <body>
-    <div id="cart_wrapper">
-        <ul>
-            <li v-for="item in cart_items">
-                <input type="checkbox" name="" id="" value="{{* item.id}}" v-model="item.checked" @change="itemChange($event)">
-                <p>{{* item.product_name}}</p>
-                <input type="number" name="" id="" v-model="item.quantity">
-                <span>{{* item.unit_price}}</span>
+    <div id="cart_wrapper" class="container">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-heading">
+                <div class=""><input type="checkbox" v-model="selectAll"></div>
+                <div class="list-group-item-text">Cart</div>
+            </li>
+            <li v-for="item in cart_items" class="list-group-item" :class="{'active': item.checked}">
+                <div><input type="checkbox" :value="item.id" v-model="item.checked"></div>
+                <div>
+                    <p draggable="true" @dragstart="item.alert='put me back'" @dragend="item.alert=''">{{item.alert || item.product_name}}</p>
+                    <input type="number" class="form-control" v-model="item.quantity">
+                    <span v-text="item.unit_price"></span>
+                </div>
             </li>
         </ul>
         <div v-show="isKJG" transition="fade">
@@ -41,55 +60,65 @@
         </div>
         <select name="" v-model="couponIndex">
             <option value="-1">不使用</option>
-            <template v-for="(index, coupon) in coupons">
-            <option value="{{* index}}" v-text="coupon | getCouponText"></option>
+            <template v-for="(coupon, index) in coupons">
+            <option :value="index" v-text="coupon.desc"></option>
             </template>
         </select>
         <div>
-            <p v-show="couponIndex > -1" transition="fade">代金券：-{{coupons[couponIndex].amount}}</p>
-            <p>总额：{{total}}</p>
+            <p v-if="couponIndex > -1" transition="fade">代金券：-{{coupons[couponIndex].amount}}</p>
+            <p :draggable="true" v-on:dragstart="itemChange">总额：{{total}}</p>
+            <p :text-content.prop="total"></p>
         </div>
     </div>
 </body>
-<script src="//bower.yizhi.com/vue/dist/vue.min.js"></script>
-<script src="./cart.js"></script>
+<!-- <script src="//bower.yizhi.com/vue/dist/vue.js"></script> -->
+<script src="//npm.yizhi.com/vue/dist/vue.js"></script>
+<!-- <link rel="stylesheet" href="//bower.yizhi.com/bootstrap/dist/css/bootstrap.css"></link> -->
+<script src="./data/cart.js"></script>
 <script>
+    var cartData = window.cartData
+    var Vue = window.Vue
     console.log(cartData);
-    Vue.filter('getCouponText', function(coupon) {
-        return `${coupon.coupon_name}-${coupon.coupon_type}-${coupon.intro}`;
+        // Vue.transition('fade', {
+        //   css: false,
+        //   enter: function (el, done) {
+        //     // 元素已被插入 DOM
+        //     // 在动画结束后调用 done
+        //     $(el)
+        //       .css('opacity', 0)
+        //       .animate({ opacity: 1 }, 1000, done)
+        //   },
+        //   enterCancelled: function (el) {
+        //     $(el).stop()
+        //   },
+        //   leave: function (el, done) {
+        //     // 与 enter 相同
+        //     $(el).animate({ opacity: 0 }, 1000, done)
+        //   },
+        //   leaveCancelled: function (el) {
+        //     $(el).stop()
+        //   }
+        // })
+        // var
+
+    cartData.coupons.forEach(coupon => {
+        coupon.desc = `${coupon.coupon_name}-${coupon.coupon_type}-${coupon.intro}`
     })
-    // Vue.transition('fade', {
-    //   css: false,
-    //   enter: function (el, done) {
-    //     // 元素已被插入 DOM
-    //     // 在动画结束后调用 done
-    //     $(el)
-    //       .css('opacity', 0)
-    //       .animate({ opacity: 1 }, 1000, done)
-    //   },
-    //   enterCancelled: function (el) {
-    //     $(el).stop()
-    //   },
-    //   leave: function (el, done) {
-    //     // 与 enter 相同
-    //     $(el).animate({ opacity: 0 }, 1000, done)
-    //   },
-    //   leaveCancelled: function (el) {
-    //     $(el).stop()
-    //   }
-    // })
-    // var
+    cartData.cart_items.forEach((item, index) => {
+        item.checked = index == 0
+    })
     var vm = new Vue({
         el: '#cart_wrapper',
         data: Object.assign(cartData, {
-            couponIndex: -1
+            couponIndex: -1,
+            selectAll: false
         }),
         methods: {
             itemChange: function(event) {
                 console.log(event.target.value);
             },
             isBusiTypeOf: function(type) {
-                var cart_items = this.cart_items.filter(item=> item.checked)
+                var cart_items = this.cart_items.filter(item => item.checked)
 
                 for (var i = 0, l = cart_items.length; i < l; ++i) {
                     if (cart_items[i].business_type == type) {
@@ -100,14 +129,14 @@
             }
         },
         computed: {
-            total: function () {
+            total: function() {
                 var productValue = this.cart_items
-                    .filter(item=> item.checked)
+                    .filter(item => item.checked)
                     .map(item => +item.unit_price * item.quantity)
-                    .reduce((item1, item2) => item1 + item2)
+                    .reduce((item1, item2) => item1 + item2, 0)
                 if (!productValue) return 0;
                 if (this.couponIndex > -1) {
-                    var couponValue = + this.coupons[this.couponIndex].amount
+                    var couponValue = +this.coupons[this.couponIndex].amount
                     productValue -= couponValue
                     if (productValue < 0) productValue = 0
                 }
@@ -123,4 +152,5 @@
         }
     })
 </script>
+
 </html>
