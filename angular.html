@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,18 +21,87 @@
     <meta name="msapplication-TileColor" content="#3372DF">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Angular 1.x Index</title>
+    <!-- <script src="//bower.yizhi.com/angular/angular.js"></script> -->
+    <script src="//cdn.bootcss.com/angular.js/1.5.9/angular.js"></script>
+    <script src="//cdn.bootcss.com/Sortable/1.4.2/Sortable.js"></script>
+    <script src="//npm.yizhi.com/angular-legacy-sortablejs/angular-legacy-sortable.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css"></link>
+    <link href="//cdn.bootcss.com/angular-bootstrap-colorpicker/3.0.25/css/colorpicker.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/angular-bootstrap-colorpicker/3.0.25/js/bootstrap-colorpicker-module.js"></script>
+
+    <style>
+        body {
+            position: relative;
+        }
+        .window-phone {
+            width: 375px;
+            height: 667px;
+            background-color: beige;
+            position: relative;
+        }
+
+        .ele-wrapper {
+            position: absolute;
+            cursor: default;
+            width: 100%;
+        }
+        .ele-content {
+            position: absolute;
+            z-index: 10;
+            height: 100%;
+            width: 100%;
+            user-select: none;
+        }
+        .ele-indicate {
+            position: absolute;
+            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%
+        }
+        .ele-indicate-line-top {
+            background-color: blue;
+            position: absolute;
+            top: -5px;
+            height: 5px;
+            width: 100%;
+            cursor: ns-resize;
+        }
+        .ele-indicate-line-bottom {
+            background-color: blue;
+            position: absolute;
+            bottom: -5px;
+            height: 5px;
+            width: 100%;
+            cursor: ns-resize;
+        }
+        .ele-indicate-line-left {
+            background-color: blue;
+            position: absolute;
+            left: -5px;
+            width: 5px;
+            height: 100%;
+            cursor: ew-resize;
+        }
+        .ele-indicate-line-right {
+            background-color: blue;
+            position: absolute;
+            right: -5px;
+            width: 5px;
+            height: 100%;
+            cursor: ew-resize;
+        }
+    </style>
 </head>
-<body
-    ng-app="myApp"
-    ng-strict-di="禁止隐式依赖注入"
->
-    <input type="text" ng-model="xxxx">
-    <input type="text" ng-model="xxxx">
+
+<body ng-app="myApp">
     <div ng-controller="IndexController">
 
+        <input type="text" colorpicker ng-model="color" ng-style="{'background': color}">
         <input type="text" ng-model="name"><br>
         <!-- 插值绑定 -->
-        <p>插值绑定：{{title}}</p>
+        <p ng-click="event.target.contentEditable=true">插值绑定：{{title}}</p>
         <!-- 输出标签 -->
         <p>输出标签：<span ng-bind-html="desc"></span></p>
         <!-- 属性绑定 -->
@@ -49,70 +119,62 @@
             <user-Info ng-if="showUserInfo" user-name="'yizhi'" age="23" gender="user.gender" say-hi="'alert(\'skdfds\')'">这里是某些跟屁虫</user-Info>
         </section>
 
-        <form name="myform" action="" novalidate> <!-- disable browser's native form validation -->
+        <form name="myform" action="" novalidate>
+            <!-- disable browser's native form validation -->
             <h2>form</h2>
             <span ng-show="myform.$submitted">this form is submitted</span>
             <span ng-hide="myform.$submitted">this form is not submitted</span>
             <h3>input[text | number | url | email | date | radio | checkbox]</h3>
-            <p>验证标志：<span>myform.myemail.$error.[required | pattern | minlength | maxlength | max | min]</span>   </p>
+            <p>验证标志：<span>myform.myemail.$error.[required | pattern | minlength | maxlength | max | min]</span> </p>
             </section>
-                <h3>input:text</h3>
-                <input type="text" name="user_name" ng-model="user.name" maxlength="50" required >
-                <span ng-show="myform.user_name.$error.maxlength">名字长度应小于50</span>
-                <span ng-show="myform.user_name.$error.required">名字不能为空</span>
+            <h3>input:text</h3>
+            <input type="text" name="user_name" ng-model="user.name" maxlength="50" required>
+            <span ng-show="myform.user_name.$error.maxlength">名字长度应小于50</span>
+            <span ng-show="myform.user_name.$error.required">名字不能为空</span>
             <section>
-            <section>
-                <h3>input:email</h3>
-                <!-- ngModel双向数据绑定 -->
-                <input
-                    type="email"
-                    ng-model="user.email"
-                    ng-model-options="{debounce: 500, updateOn: 'default blur'}"
-                    name="user_email"
-                    required="">
-                <!-- 验证标识 -->
-                <span ng-show="myform.user_email.$error.required">请输入邮箱</span>
-                <span ng-show="myform.user_email.$error.email">邮箱格式错误</span>
-                <span ng-hide="myform.user_email.$error.email || myform.user_email.$error.required">邮箱格式正确</span>
-            </section>
+                <section>
+                    <h3>input:email</h3>
+                    <!-- ngModel双向数据绑定 -->
+                    <input type="email" ng-model="user.email" ng-model-options="{debounce: 500, updateOn: 'default blur'}" name="user_email" required="">
+                    <!-- 验证标识 -->
+                    <span ng-show="myform.user_email.$error.required">请输入邮箱</span>
+                    <span ng-show="myform.user_email.$error.email">邮箱格式错误</span>
+                    <span ng-hide="myform.user_email.$error.email || myform.user_email.$error.required">邮箱格式正确</span>
+                </section>
                 <h3>input:number</h3>
                 <input type="number" name="user_age" ng-model="user.age" max="100" min="18" id="">
                 <span ng-show="myform.user_age.$error.max">建国后不许成精</span>
                 <span ng-show="myform.user_age.$error.min">十八禁</span>
                 <span ng-hide="myform.user_age.$error.max || myform.user_age.$error.min">终于来个正常的</span>
-            <section>
+                <section>
 
-            </section>
-            <section>
-                <h3>input:radio</h3><a href="/{user.name}"></a>
-                <!-- 由于绑定了model,变成了受控控件，checked属性失效，应通过初始值控制 -->
-                <input type="radio" ng-model="user.gender" name="gender" value="female">
-                <input type="radio" ng-model="user.gender" name="gender" value="male">
-                <span ng-bind="user.gender"></span>
-            </section>
-            <section>
-                <h3>input:checkbox</h3>
-                <input type="checkbox" ng-model="habit[0]" name="habit" value="'football'">
-                <input type="checkbox" ng-model="habit[1]" name="habit" value="'tennis'">
-                <span ng-bind="habit|json"></span>
-            </section>
-            <section>
-                <h3>布尔属性</h3>
-                <!-- 标准html disabled checked之类布尔属性，属性值会被忽略，这里用ng-disabled代替     -->
-                <button type="button"
-                    ng-click="onClick()"
-                    ng-disabled="agree"
-                    ng-bind="agree?'不可点击':'可点击'">ok</button>
-                <input type="checkbox" ng-model="agree" name="agree" id="" value="chk1">
-                clickTimes: <span ng-bind="times"></span>
-            </section>
+                </section>
+                <section>
+                    <h3>input:radio</h3>
+                    <a href="/{user.name}"></a>
+                    <!-- 由于绑定了model,变成了受控控件，checked属性失效，应通过初始值控制 -->
+                    <input type="radio" ng-model="user.gender" name="gender" value="female">
+                    <input type="radio" ng-model="user.gender" name="gender" value="male">
+                    <span ng-bind="user.gender"></span>
+                </section>
+                <section>
+                    <h3>input:checkbox</h3>
+                    <input type="checkbox" ng-model="habit[0]" name="habit">
+                    <input type="checkbox" ng-model="habit[1]" name="habit">
+                    <span ng-bind="habit|json"></span>
+                </section>
+                <section>
+                    <h3>布尔属性</h3>
+                    <!-- 标准html disabled checked之类布尔属性，属性值会被忽略，这里用ng-disabled代替     -->
+                    <button type="button" ng-click="onClick()" ng-disabled="agree" ng-bind="agree?'不可点击':'可点击'">ok</button>
+                    <input type="checkbox" ng-model="agree" name="agree" id="" value="chk1"> clickTimes: <span ng-bind="times"></span>
+                </section>
         </form>
     </div>
     <div>
         <a href="https://vsavkin.com/angular-2-template-syntax-5f2ee9f13c6a#.va1dkz1q3" title="Angular 2 Template Syntax">Angular 2 Template Syntax</a>
     </div>
 </body>
-<script src="//bower.yizhi.com/angular/angular.js"></script>
 <script>
     // $sce: strict contextual escaping 严格上下文模式，用于html安全绑定
     function IndexController($scope, $sce) {
@@ -121,22 +183,17 @@
         $scope.desc = $sce.trustAsHtml('<span style="color: red">$sce.trustAsHtml()</span>')
         $scope.count = 0
         $scope.times = 0
-        $scope.user = {
-            name: 'yizhi',
-            gender: 'female',
-            age: 10,
-            habit: ['football', 'tennis']
-        }
+
         var deep = false;
         // 监听属性变化
         $scope.$watch('name', function(newVal, oldVal) {
-            $scope.count++;
-        }, deep)
-        // 监听对象、数组属性变化
+                $scope.count++;
+            }, deep)
+            // 监听对象、数组属性变化
         $scope.$watchCollection('name', function(newVal, oldVal) {
-            $scope.count++;
-        })
-        // 监听广播事件
+                $scope.count++;
+            })
+            // 监听广播事件
         $scope.$on('myEvent', function() {
 
         })
@@ -147,8 +204,8 @@
 
         setTimeout(function() {
             $scope.title += '-async'
-            // 此处脱离angular执行环境，修改不会触发更新
-            // 需手动触发$digest
+                // 此处脱离angular执行环境，修改不会触发更新
+                // 需手动触发$digest
             $scope.$apply()
 
             // 或者作为执行函数传入
@@ -160,55 +217,59 @@
         }, 1000);
 
         $scope.$watch('agree', function(val) {
-            // console.log(val);
-        })
-        // $scope.$destroy()
+                // console.log(val);
+            })
+            // $scope.$destroy()
     }
+
+    IndexController.$inject = ['$scope', '$sce']
 
     // 如果没有ngApp指令，angular不会自动初始化，需手动初始化
     // angular.bootstrap(container, [controller])
-    var app = angular.module('myApp', [])
-    // .config(function($provider, $compileProvider, $filterProvider) {
-    //     $provider.value('a', 123)
-    //     $provider.factory('a', function() {})
-    //     $provider.decorator('a', function() {})
-    //     $compileProvider.directive('directivename', function() {})
-    //     $filterProvider.register('filtername', function() {})
-    //     $compileProvider.debugInfoEnabled(false)
-    //     $compileProvider.commentDirectivesEnabled(false)
-    //     $compileProvider.cssClassDirectivesEnabled(false);
-    // })
-    // .provider('a', factoryFn)   // {$get} => new factoryFn(), a = $get()
-    //
-    // // object available in config phase
-    // // A run block is the code which needs to run to kickstart the application
-    // // run after config and injector has been created
-    // .run(block)
-    // // same as `$provider.constant`
-    .constant('PI', 3.1415)
-    // same as `$provider.value`
-    .value('name', 'yizhi')
-    // // 三种依赖注入方式 1 $inject Property Annotation
-    // IndexController.$inject = ['$scope']
-    // app.controller('IndexController', IndexController)
-    // // 三种依赖注入方式 2 Inline Array Annotation
-    app.controller('IndexController', ['$scope', '$sce', IndexController])
-    // // 三种依赖注入方式 3, Implicit Annotation
-    // // 自动根据工厂函数形参识别依赖，这种方式如果代码被压缩，可能出错
-    // .controller('IndexController', IndexController)
-    //
-    // // 过滤器
-    // // 过滤器也是一种服务，可以作为依赖注入到其他工厂函数
-    // `module.filter('filtername', factoryFn)`
-    // same as `$filterProvider.register`
-    .filter('capitalize', function() {
-        return function(str, reverse) {
-            // console.log(str);
-            if (!str) return ''
-            if (reverse) {str = str.split('').reverse().join('')}
-            return str.slice(0, 1).toUpperCase() + str.slice(1);
-        }
-    })
+    var app = angular.module('myApp', ['colorpicker.module', 'ng-sortable'])
+        // .config(function($provider, $compileProvider, $filterProvider) {
+        //     $provider.value('a', 123)
+        //     $provider.factory('a', function() {})
+        //     $provider.decorator('a', function() {})
+        //     $compileProvider.directive('directivename', function() {})
+        //     $filterProvider.register('filtername', function() {})
+        //     $compileProvider.debugInfoEnabled(false)
+        //     $compileProvider.commentDirectivesEnabled(false)
+        //     $compileProvider.cssClassDirectivesEnabled(false);
+        // })
+        // .provider('a', factoryFn)   // {$get} => new factoryFn(), a = $get()
+        //
+        // // object available in config phase
+        // // A run block is the code which needs to run to kickstart the application
+        // // run after config and injector has been created
+        // .run(block)
+        // // same as `$provider.constant`
+        .constant('PI', 3.1415)
+        // same as `$provider.value`
+        .value('name', 'yizhi')
+        // // 三种依赖注入方式 1 $inject Property Annotation
+        // IndexController.$inject = ['$scope']
+        // app.controller('IndexController', IndexController)
+        // // 三种依赖注入方式 2 Inline Array Annotation
+        .controller('IndexController', IndexController)
+        // // 三种依赖注入方式 3, Implicit Annotation
+        // // 自动根据工厂函数形参识别依赖，这种方式如果代码被压缩，可能出错
+        // .controller('IndexController', IndexController)
+        //
+        // // 过滤器
+        // // 过滤器也是一种服务，可以作为依赖注入到其他工厂函数
+        // `module.filter('filtername', factoryFn)`
+        // same as `$filterProvider.register`
+        .filter('capitalize', function() {
+            return function(str, reverse) {
+                // console.log(str);
+                if (!str) return ''
+                if (reverse) {
+                    str = str.split('').reverse().join('')
+                }
+                return str.slice(0, 1).toUpperCase() + str.slice(1);
+            }
+        })
 
     // 装饰过滤器需添加Filter后缀
     // 装饰directive需添加Directive后缀
@@ -216,51 +277,51 @@
     // 装饰capitalize过滤器,
     // .decorator('$log',[$delegate, factoryFn] ) // $log => factoryFn($delegate)
     // same as `$provider.decorator`
-    app.decorator('capitalizeFilter', ['$delegate', 'consoleFactory', function ($delegate, consoleFactory) {
-        return function(str, reverse=false) {
-            var result = $delegate.apply(null, arguments)
-            consoleFactory.log('capitalize', str, reverse, result);
-            return result
-        };
-    }])
-    // provider 的特殊之处就是可以在 module 启动时进行配置， 从而达到特殊的用途
-    // mypro = new contructor().$get()
-    .provider('mypro', function() {
-        this.$get = function() {
-            return {
-                sayHi: function() {
-                    console.log('Hi, this is Provider mypro');
+    app.decorator('capitalizeFilter', ['$delegate', 'consoleFactory', function($delegate, consoleFactory) {
+            return function(str, reverse = false) {
+                var result = $delegate.apply(null, arguments)
+                consoleFactory.log('capitalize', str, reverse, result);
+                return result
+            };
+        }])
+        // provider 的特殊之处就是可以在 module 启动时进行配置， 从而达到特殊的用途
+        // mypro = new contructor().$get()
+        .provider('mypro', function() {
+            this.$get = function() {
+                return {
+                    sayHi: function() {
+                        console.log('Hi, this is Provider mypro');
+                    }
                 }
             }
-        }
-    })
-    // .service(identifier, constructor)
-    .service('consoleService', function () {
-        this.log = function() {
-            console.log('by consoleService.log');
-            console.log.apply(console, arguments)
-        }
-        this.warn = function() {
-            console.log('by consoleService.warn');
-            console.warn.apply(console, arguments)
-        }
-    })
-    // `module.factory(identifier, factoryFn)`
-    // same as `$provider.factory`
-    // factory方法注册的service是注册函数的执行结果
-    // service方法注册的service是用注册函数构造的实例
-    .factory('consoleFactory', function () {
-        return {
-            log: function() {
-                console.log('by consoleFactory.log');
+        })
+        // .service(identifier, constructor)
+        .service('consoleService', function() {
+            this.log = function() {
+                console.log('by consoleService.log');
                 console.log.apply(console, arguments)
-            },
-            warn: function() {
-                console.log('by consoleFactory.warn');
+            }
+            this.warn = function() {
+                console.log('by consoleService.warn');
                 console.warn.apply(console, arguments)
             }
-        };
-    })
+        })
+        // `module.factory(identifier, factoryFn)`
+        // same as `$provider.factory`
+        // factory方法注册的service是注册函数的执行结果
+        // service方法注册的service是用注册函数构造的实例
+        .factory('consoleFactory', function() {
+            return {
+                log: function() {
+                    console.log('by consoleFactory.log');
+                    console.log.apply(console, arguments)
+                },
+                warn: function() {
+                    console.log('by consoleFactory.warn');
+                    console.warn.apply(console, arguments)
+                }
+            };
+        })
 
     .animation('.animation', function() {
         return {
@@ -274,8 +335,8 @@
                 return function(isCancelled) {}
             },
             // you can also capture these animation events
-            addClass : function(element, className, done) {},
-            removeClass : function(element, className, done) {}
+            addClass: function(element, className, done) {},
+            removeClass: function(element, className, done) {}
         };
     })
 
@@ -300,20 +361,20 @@
                 // 2.属性名会被格式化为camel-case
                 // bind a local scope property to the value of DOM attribute `title`.
                 title: "@",
-                // set up a bidirectional binding between a local scope property and an expression passed via the attribute `userName`,
+                age: "=", // 同"=age"
+                // bidirectional binding
                 name: "=userName",
-                // set up a one-way (one-directional) binding between a local scope property and an expression passed via the attribute `gender`.
+                // one-way binding, since 1.5
                 gender: "<",
                 // provides a way to execute an expression in the context of the parent scope
                 say: "&sayHi",
-                age: "=",  // 同"=age"
             },
             // 是否保留指令内部的元素，默认false, 保留位置由模板里的ngTransclude指令指定
             transclude: true,
             // [DEPRECATED!] Replace the directive element
             replace: false,
             // 指定模板内容
-            template: '<p>Name: <span ng-bind="name"></span> - {{gender}} - {{age}} - {{title}} - <span ng-transclude></span></p>',
+            template: `<p>Name: <span ng-bind="name"></span> - {{gender}} - {{age}} - {{title}} - <span ng-transclude></span></p>`,
             // 指定模板文件，适用于较大的模板，
             // templateUrl: './userinfo.html',
             // templateUrl: function(elem /*指令元素*/, attr/*指令元素属性*/) {
@@ -327,7 +388,7 @@
                 attrs, /* normalized attribute Object */
                 controller, /* require配置项指定的控制器实例，如果指定多个则为数组 */
                 transcludeFn /* a transclude linking function pre-bound to the correct transclusion scope */
-                           ) {
+            ) {
                 // console.log(scope, attrs, attrs.$$element === element);
                 element.on('$destroy', function() {
                     console.log('destroy event on element');
@@ -352,6 +413,7 @@
         }
     }])
 
+    // since 1.5
     .component('myComponent', {
         templateUrl: './myComponent.html',
         controller: function($scope, $element, $attrs) {
@@ -379,4 +441,5 @@
         // * terminal: ,
     })
 </script>
+
 </html>

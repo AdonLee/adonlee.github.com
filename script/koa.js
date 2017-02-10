@@ -12,6 +12,11 @@ router.get('/', function*(next) {
     console.log('%s %s', this.method, this.url);
 })
 
+router.get('/', function* (next) {
+    this.body += 'kjskdfj'
+    yield next
+})
+
 app.use(router.routes())
 
 app.listen(3000)

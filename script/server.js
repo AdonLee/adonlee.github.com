@@ -1,11 +1,10 @@
 let WebpackDevServer = require('webpack-dev-server')
 let webpack = require('webpack')
 
-const Config = require('./webpack.config.js')
+const Config = require('../webpack.config.js')
 const PORT = 3000
-const PUBLIC_PATH = 'dist'
 
-Config.output.publicPath = `http://localhost:${PORT}/${PUBLIC_PATH}`
+Config.output.publicPath = `http://localhost:${PORT}${Config.output.publicPath}`
 Config.plugins.push(new webpack.HotModuleReplacementPlugin())
 Config.debug = true
 // Config.proxy = {
@@ -14,10 +13,14 @@ Config.debug = true
 //     }
 // }
 
-Config.entry.app.unshift(
-  `webpack-dev-server/client?http://localhost:${PORT}`, // WebpackDevServer host and port
-  // 'webpack/hot/dev-server'
-  )
+Object.keys(Config.entry).map(key => {
+    if (!Config.entry[key].unshift) {
+        Config.entry[key] = [Config.entry[key]]
+    }
+    Config.entry[key].unshift(`webpack-dev-server/client?http://localhost:${PORT}/`)
+    Config.entry[key].unshift('webpack/hot/dev-server')
+})
+
 console.log(Config);
 
 var compiler = webpack(Config)
@@ -29,4 +32,3 @@ new WebpackDevServer(compiler, {
         color: true
     }
 }).listen(PORT);
-

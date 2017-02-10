@@ -4,8 +4,8 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
-import App from './comp/App';
-import reducer from './reducer';
+import App from './react/comp/App';
+import reducer from './react/reducer';
 // TOP API
 // Children                                     //
 // Component                                    //
@@ -45,6 +45,9 @@ let initState = {
         }, {
             content: '溜冰',
             author: 'xuanmu'
+        }, {
+            content: '溜冰',
+            author: 'xuanmu'
         }
     ]
 }
@@ -52,16 +55,14 @@ let store = createStore(reducer, initState)
 let target = document.querySelector('#container')
 
 if (module.hot) {
-    // 允许热加载，否则会整个页面刷新
     module.hot.accept()
 
     // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./', () => {
-      const nextRootReducer = require('./reducer');
-      store.replaceReducer(nextRootReducer);
-    });
+    // module.hot.accept('./react/reducer', () => {
+    //   const nextRootReducer = require('./react/reducer');
+    //   store.replaceReducer(nextRootReducer);
+    // });
 }
-
 render(
     <Provider store={store}>
         <App>你好</App>

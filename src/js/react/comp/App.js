@@ -32,7 +32,7 @@ class App extends Component{
 
         return (<div>
             <table className="table table-striped">
-            <caption>TODO LIST<button className="glyphicon glyphicon-plus pull-right" onClick=""></button></caption>
+            <caption>TODO LIST<button className="glyphicon glyphicon-plus pull-right" onClick=""/></caption>
             <tbody>
                 {list.map((item, index) =>
                 <tr key={index} className="">
@@ -40,9 +40,9 @@ class App extends Component{
                     <td className="">{item.create_time}</td>
                     <td className="">
                         <div className="pull-right">
-                            <button className="glyphicon glyphicon-minus"></button>
-                            <button className="glyphicon glyphicon-hand-up"></button>
-                            <button className="glyphicon glyphicon-hand-down"></button>
+                            <span className="glyphicon glyphicon-minus"/>
+                            <span className="glyphicon glyphicon-hand-up"/>
+                            <span className="glyphicon glyphicon-hand-down"/>
                         </div>
                     </td>
                 </tr>

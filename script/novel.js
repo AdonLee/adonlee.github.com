@@ -1,4 +1,6 @@
-var verbose = process.argv.indexOf('-v') > -1 || process.argv.indexOf('--version') > -1
+#!/usr/local/bin/node
+
+var verbose = process.argv.includes('-v', '--version')
 var debug = process.execArgv.join('').indexOf('--debug-brk') > -1
 
 if (process.cwd() !== __dirname) {
@@ -51,12 +53,14 @@ function checkUpdate() {
     // update novel list page
     fs.writeFileSync(
         path.resolve(bookVault, 'index.html'),
-        `<title>Novel List</title><div style="width:650px;margin:50px auto">
-            <body style="background:ivory">
+        `<title>Novel List</title>
+        <link href="./index.css" rel="stylesheet">
+        <body>
+            <div class="container">
                 <h2>Novel List</h2>
                 ${novelListText}
-            </body>
-        </div>`
+            </div>
+        </body>`
     )
 
     // Update novel info
@@ -65,6 +69,12 @@ function checkUpdate() {
         chapterInfoPath,
         JSON.stringify(chapterInfo, null, 4)
     )
+
+    var maxims = require('../data/maxim.json')
+    var rdNum = Math.floor(Math.random() * maxims.length)
+    var maxim = maxims[rdNum].content
+    console.log(maxim)
+
 
 }
 
@@ -81,6 +91,9 @@ function scrabChapterList(novel) {
         var oldLen = chapter.len || 0
         var newLen = $chapters.length
 
+        if (newLen < oldLen) {
+            oldLen = newLen - 1
+        }
 
         if (newLen > oldLen) {
             var $chapter = $chapters.eq(oldLen)
@@ -106,8 +119,9 @@ function scrabChapterList(novel) {
             fs.writeFileSync(
                 path.resolve(bookDir, `index.html`),
                 `<title>${novelName}</title>
-                <body style="background:ivory">
-                    <div style="width:650px;margin:50px auto">
+                <link href="../index.css" rel="stylesheet">
+                <body>
+                    <div class="container">
                         <h2>${novelName}</h2>
                         <h3>${author}</h3>
                         <ol>\n${chapterListText}\n</ol>
@@ -122,7 +136,7 @@ function scrabChapterList(novel) {
             }
 
             // update nav of lastest chapter when chapterList updated
-            scrabChapterDetail(chapter.href, true)
+            chapter.href && scrabChapterDetail(chapter.href, true)
 
 
             chapterInfo[novel] = {
@@ -136,10 +150,8 @@ function scrabChapterList(novel) {
                 time: Date.now(),
                 href: chapterUrl
             }
-        } else if (newLen < oldLen) {
-            oldLen = newLen - 1
         } else {
-            novelName = novelName + ' '.repeat(10 - novelName.length * 2)
+            novelName = novelName + ' '.repeat(15 - novelName.length * 2)
             verbose && console.log(`Novel ${novelName} - ${new Date(chapter.time||null).toISOString()} - 最新 ${chapter.last}`);
         }
 
@@ -173,7 +185,7 @@ function scrabChapterDetail(href, justUpdate) {
             .join('\t\n')
 
         var content = `<title>${chapterName}</title>
-        <style>p{text-indent:1.2em}</style>
+        <link href="../index.css" rel="stylesheet">
         <script>
         document.onkeyup = function(e){
             var href = ({
@@ -183,8 +195,8 @@ function scrabChapterDetail(href, justUpdate) {
             if (href) location.href = href
         }
         </script>
-        <body style="background:ivory">
-            <div style="width:650px;margin:50px auto;">
+        <body>
+            <div class="container">
                 <nav>${navText}</nav>
                 <h2>${chapterName}</h2>
                 <p>${text}</p>
@@ -213,7 +225,6 @@ function scrab(url, done) {
                 console.log(err);
             }
             done(err, win, win.$)
-
         }
     })
 }
