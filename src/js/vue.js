@@ -1,5 +1,5 @@
 /* global Vue*/
-// import MyBodyComponent from './vue/my-body'
+import MyBodyComponent from './vue/my-body.vue'
 // import MyHeaderComponent from './vue/my-header'
 // import MyFooterComponent from './vue/my-footer'
 // import MinusPlusComponent from './vue/minus-plus'
@@ -79,6 +79,7 @@ Vue.component('hotel', {
 
 new Vue({
     el: '#cart_wrapper',        //query string | HTMLElement
+    components: {MyBodyComponent},
     created: function() {
         fetch('/data/mapping.json')
         .then(response => {

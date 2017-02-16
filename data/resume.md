@@ -17,7 +17,7 @@
 
 - 熟悉`jQuery`/`Bootstrap`，对主流框架`React/jsx/Redux`、`Angular[2]`、`Vue`均有所了解.
 
-- 了解`Nodejs`，熟悉前端自动化构建流程
+- 了解`Nodejs`，熟悉`gulp`、`webpack`等前端自动化构建工具
 
 - 轻度代码洁癖，追求模块化、规范化、文档化
 
@@ -27,7 +27,7 @@
 
 #### 深圳道旅旅游科技 | `前端工程师` | 2016/9至今
 工作内容:
-- 参与[道旅](//www.didatravel.com)各个系统的前端(angular+bs)开发和维护
+- 参与[道旅旅游](//www.didatravel.com)各个系统的前端(angular 1.x + bootstrap)开发和维护
 
 ##### 深圳辉煌十月科技 | `JavaScript` | 2015/3-2016/8
 

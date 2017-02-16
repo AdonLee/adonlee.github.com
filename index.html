@@ -1,61 +1,45 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Adonlee.GitHub.com : my github pages">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <title>Welcome to Adam's Page</title>
     <link rel="stylesheet" type="text/css" media="screen" href="css/stylesheet.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="css/common.css">
     <link rel="shortcut icon" href="img/icon/yz_logo_100.png">
-
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="img/favorite.png">
-    <link rel="apple-touch-startup-image" href="img/favorite.png" media="all">
-    <meta name="apple-mobile-web-app-title" content="Resume">
-    <!-- <meta name="apple-mobile-web-app-status-bar-style" content="translucent black"> -->
-    <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
-    <meta name="format-detection" content="telephone=no">
-    <title>Adonlee.GitHub.com</title>
-
-  </head>
-  <body>
-    <!-- HEADER -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css"></link>
+</head>
+<body>
     <div id="header_wrap" class="outer">
-      <header class="inner">
-        <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
-        <h1 id="project_title">李策东个人简历</h1>
-        <h2 id="project_tagline">Learn to copy and paste, better import</h2>
-      </header>
-    </div>
+        <header class="inner">
+            <div class="container">
+                <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
+                <h1 id="project_title"> Welcome to Yizhi's Corner</h1>
+                <h2 id="project_tagline">Learn to copy and paste, better import</h2>
+            </div>
+        </header>
+        <div class="container">
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-        <section id="main_content" class="inner">
-            <div class="loading loading-ring"></div>
-        </section>
+        </div>
     </div>
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
+    <div class="row">
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li><a href="/resume.html">Resume</a></li>
+                <li><a href="/vue.html">Vue 2.x</a></li>
+                <li><a href="/react.html">React</a></li>
+                <li><a href="/angular.html">Angular 1.x</a></li>
+                <li><a href="//wd.yizhi.com/">WordPress</a></li>
+            </ul>
+        </div>
     </div>
-  </body>
-  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
-  <!-- <script src="vendor/marked/marked.min.js"></script> -->
-  <script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
-  <script>
-  $(function() {
+    <div class="row">
+        <div class="container">
+            <div class="alert text-center">
+                <h3>404 not found or sth is coming</h3>
+            </div>
 
-    $.get('data/resume.md')
-        .then(function(data) {
-          $('#main_content').html(window.marked(data));
-          location.href = '#main_content'
-        })
-        .fail(function(err) {
-            $('#main_content').text('Fail to load resume, Please try to refresh again!')
-        })
-  })
-  </script>
+        </div>
+    </div>
+</body>
 </html>

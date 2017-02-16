@@ -1,6 +1,8 @@
 #!/usr/local/bin/node
 
-var verbose = process.argv.includes('-v', '--version')
+var verbose = process.argv.includes('-v')
+verbose = verbose || process.argv.includes('--version')
+var silent = process.argv.includes('--silent')
 var debug = process.execArgv.join('').indexOf('--debug-brk') > -1
 
 if (process.cwd() !== __dirname) {
@@ -132,7 +134,7 @@ function scrabChapterList(novel) {
             if (newLen - oldLen > 5) oldLen = newLen - 5;
 
             for (var i = oldLen; i < newLen; i++) {
-                scrabChapterDetail($chapters.eq(i).prop('href'))
+                scrabChapterDetail($chapters.eq(i).prop('href'), silent)
             }
 
             // update nav of lastest chapter when chapterList updated
@@ -210,7 +212,7 @@ function scrabChapterDetail(href, justUpdate) {
 
         fs.writeFileSync(savePath, content)
 
-        justUpdate || childProcess.exec(`open http://project.yizhi.com/yizhi/data/${savePath}`)
+        justUpdate || childProcess.exec(`open ../data/${savePath}`)
 
     })
 }
@@ -218,7 +220,8 @@ function scrabChapterDetail(href, justUpdate) {
 function scrab(url, done) {
     jsdom.env({
         url: url,
-        scripts: ["http://bower.yizhi.com/jquery/dist/jquery.js"],
+        scripts: ["http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"],
+        // scripts: ["http://bower.yizhi.com/jquery/dist/jquery.js"],
         userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1',
         done: function(err, win) {
             if (err || !win) {
