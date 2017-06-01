@@ -1,1 +1,2 @@
-console.log('This would be the main JS file.');
+import vue from 'vue'
+import route from 'vue-router'

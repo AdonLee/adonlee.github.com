@@ -17,6 +17,11 @@ module.exports = {
         filename: '[name].js',
         publicPath: '/dist/js'
     },
+    externals: {
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        marked: 'marked'
+    },
     module: {
         loaders: [{
                 test: /\.js$/,

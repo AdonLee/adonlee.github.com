@@ -19,20 +19,18 @@ var chapterInfoPath = path.join(bookVault, 'chapterInfo.json')
 var chapterInfo = require(chapterInfoPath)
 var novelIdList = Object.keys(chapterInfo)
 
-;
-(function() {
-
+if (require.main == module) {
     // record for summary
     debug || fs.writeFileSync(logPath, '\n' + new Date().toISOString(), { flag: 'a' })
 
     novelIdList = novelIdList.length ? novelIdList : [635, 3590, 168, 3598, 285, 18923]
 
     checkUpdate()
-})()
+} else {
+    exports.checkUpdate = checkUpdate
+}
 
-// novelIdList.map(novelID => new Promise((resolve, reject) => {
 
-// }))
 function checkUpdate() {
     var novel = novelIdList.pop()
 
@@ -72,12 +70,15 @@ function checkUpdate() {
         JSON.stringify(chapterInfo, null, 4)
     )
 
+    showMaximum()
+
+}
+
+function showMaximum() {
     var maxims = require('../data/maxim.json')
     var rdNum = Math.floor(Math.random() * maxims.length)
     var maxim = maxims[rdNum].content
     console.log(maxim)
-
-
 }
 
 function scrabChapterList(novel) {
@@ -142,8 +143,9 @@ function scrabChapterList(novel) {
 
 
             chapterInfo[novel] = {
+                id: novel,
                 name: novelName,
-                desc: $('#intro').text(),
+                desc: $('#intro').text().trim().split('\n').slice(0, -1).join('\n'),
                 author: author,
                 lastChapter: $infos.eq(3).text().split('：').pop(),
                 updateTime: $infos.eq(2).text().split('：').pop(),
@@ -181,6 +183,7 @@ function scrabChapterDetail(href, justUpdate) {
             .filter(a => a.pathname.indexOf('/book/') > -1)
             .map(a => ({ href: a.pathname.split('/').pop() || 'index.html', title: a.textContent }))
 
+        if (!navList.length) return
         var navText = navList
             .map(nav => `<a href="${nav.href}">${nav.title}</a>`)
             .concat(`<a href="${href}">源网址</a>`)

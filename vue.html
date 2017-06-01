@@ -25,18 +25,26 @@
 </head>
 
 <body>
-    <div id="cart_wrapper">
-        <my-body-component></my-body-component>
-        <div class="container-fluid">
-            <!-- <hotel :info="hotel"></hotel> -->
-        </div>
-    </div>
+    <div id="cart_wrapper"></div>
 
 </body>
 <!-- <script src="//bower.yizhi.com/vue/dist/vue.js"></script> -->
 <!-- <script src="//npm.yizhi.com/vue/dist/vue.js"></script> -->
-<script src="//cdn.bootcss.com/vue/2.1.4/vue.js"></script>
+<!--<script src="//cdn.bootcss.com/require.js/2.3.2/require.js"></script>
+<script>
+    requirejs.config({
+        vue: '//cdn.bootcss.com/vue/2.1.10/vue.js',
+        vuex: '//cdn.bootcss.com/vuex/2.0.0/vuex.js',
+        marked: '//cdn.bootcss.com/marked/0.3.6/marked.js'
+    })
+
+    requirejs(['vue', 'vuex', 'marked'], function() {
+        requirejs('./dist/js/vue.js')
+    })
+</script>-->
+<script src="//cdn.bootcss.com/vue/2.1.10/vue.js"></script>
 <script src="//cdn.bootcss.com/vuex/2.0.0/vuex.js"></script>
+<script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
 <script src="./data/cart.js"></script>
 <script src="./dist/js/vue.js"></script>
 

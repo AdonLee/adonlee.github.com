@@ -2,8 +2,14 @@
     import CartItem from './cart-item.vue'
     import CouponSelect from './coupon-select.vue'
     import IdInfo from './id-info.vue'
+    import Markdown from './markdown.vue'
     export default {
-        components: {CartItem, CouponSelect, IdInfo},
+        components: {
+            CartItem,
+            CouponSelect,
+            IdInfo,
+            Markdown
+        },
         data: function() {
             /* global cartData Vue*/
             cartData.coupons.forEach(coupon => {
@@ -59,10 +65,10 @@
             }
         }
     }
-
 </script>
 <template>
     <div  class="container">
+        <markdown src="http://localhost:3000/data/resume.md"></markdown>
         <ul class="list-group">
             <li class="list-group-item list-group-item-heading">
                 <div class="checkbox"><input type="checkbox" v-model="selectAll"></div>
@@ -83,14 +89,14 @@
             <template slot="item" scope="props">
                 <option :value="props.index" v-text="props.coupon.desc"></option>
             </template>
-        </coupon-select>
+</coupon-select>
 
-        <div>
-            <p v-if="couponIndex > -1" transition="fade">代金券：-{{coupons[couponIndex].amount}}</p>
-            <p :draggable="true">总额：{{total}}</p>
-            <p :inner-text.prop="total"></p>
-        </div>
+<div>
+    <p v-if="couponIndex > -1" transition="fade">代金券：-{{coupons[couponIndex].amount}}</p>
+    <p :draggable="true">总额：{{total}}</p>
+    <p :inner-text.prop="total"></p>
+</div>
 
-    </div>
+</div>
 
 </template>

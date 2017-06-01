@@ -1,10 +1,13 @@
 <script>
-
     export default {
         props: {
             info: {
-                type: Object,
-                require: false
+                type: Object
+            }
+        },
+        data() {
+            return {
+                info: Object.assign({}, this.info)
             }
         }
     }

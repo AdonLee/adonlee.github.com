@@ -1,19 +1,5 @@
-/* global Vue*/
-import MyBodyComponent from './vue/my-body.vue'
-// import MyHeaderComponent from './vue/my-header'
-// import MyFooterComponent from './vue/my-footer'
-// import MinusPlusComponent from './vue/minus-plus'
-// import CartItemComponent from './vue/cart-item'
-// import CouponSelectComponent from './vue/coupon-select'
-// import IdInfoComponent from './vue/id-info'
-
-// Vue.component('my-body', MyBodyComponent)
-// Vue.component('minus-plus', MinusPlusComponent)
-// Vue.component('id-info', IdInfoComponent)
-// Vue.component('cart-item', CartItemComponent)
-// Vue.component('coupon-select', CouponSelectComponent)
-// Vue.component('my-header', MyHeaderComponent)
-// Vue.component('my-footer', MyFooterComponent)
+import Vue from 'vue'
+import MyBody from './vue/my-body.vue'
 
 Vue.component('slave', {
     props: ['info'],
@@ -78,24 +64,26 @@ Vue.component('hotel', {
 
 
 new Vue({
-    el: '#cart_wrapper',        //query string | HTMLElement
-    components: {MyBodyComponent},
+    el: '#cart_wrapper', //query string | HTMLElement
+    components: { MyBody },
     created: function() {
         fetch('/data/mapping.json')
-        .then(response => {
-            return response.json()
-        })
-        .then(hotel => {
-            this.hotel = hotel
-        })
+            .then(response => {
+                return response.json()
+            })
+            .then(hotel => {
+                this.hotel = hotel
+            })
     },
     // components: ['hotel'],
     data: {
         hotel: {}
     },
+    template: `<my-body></my-body>`,
     // template: `<div class="container-fluid">
-    //     <hotel :info="hotel"></hotel>
-    // </div>`,
+    //         <hotel :info="hotel"></hotel>
+    //     </div>
+    // `,
     // data: {name: 'yizhi'},
     // props: [],
     // propsData: {},
@@ -150,4 +138,3 @@ new Vue({
 //   }
 // })
 // var
-

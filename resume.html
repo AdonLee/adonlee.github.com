@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Adonlee.GitHub.com : my github pages">
@@ -18,15 +19,16 @@
     <meta name="format-detection" content="telephone=no">
     <title>Adonlee.GitHub.com</title>
 
-  </head>
-  <body>
+</head>
+
+<body>
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
-      <header class="inner">
-        <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
-        <h1 id="project_title">李策东个人简历</h1>
-        <h2 id="project_tagline">Learn to copy and paste, better import</h2>
-      </header>
+        <header class="inner">
+            <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
+            <h1 id="project_title">李策东个人简历</h1>
+            <h2 id="project_tagline">Learn to copy and paste, better import</h2>
+        </header>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -37,25 +39,24 @@
     </div>
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
-      </footer>
+        <footer class="inner">
+            <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+        </footer>
     </div>
-  </body>
-  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
-  <!-- <script src="vendor/marked/marked.min.js"></script> -->
-  <script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
-  <script>
-  $(function() {
+</body>
+<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+<!-- <script src="vendor/marked/marked.min.js"></script> -->
+<script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
+<script>
+    $(function() {
 
-    $.get('data/resume.md')
-        .then(function(data) {
-          $('#main_content').html(window.marked(data));
-          location.href = '#main_content'
+        fetch('data/resume.md')
+        .then(resp => resp.text())
+        .then(resume => {
+            $('#main_content').html(window.marked(resume));
+            location.href = '#main_content'
         })
-        .fail(function(err) {
-            $('#main_content').text('Fail to load resume, Please try to refresh again!')
-        })
-  })
-  </script>
+    })
+</script>
+
 </html>

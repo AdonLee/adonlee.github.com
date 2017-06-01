@@ -17,7 +17,7 @@
 <script>
     import MinusPlus from './minus-plus.vue'
     export default {
-        components: {MinusPlus},
+        components: { MinusPlus },
         props: {
             info: {
                 type: Object,
