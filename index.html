@@ -4,44 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Adam's Page</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="src/css/stylesheet.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="shortcut icon" href="img/icon/yz_logo_100.png">
+    <link rel="stylesheet" href="src/css/common.css">
+    <link rel="shortcut icon" href="src/img/icon/yz_logo_100.png">
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css"></link>
 </head>
 
 <body>
-    <div id="header_wrap" class="outer">
-        <header class="inner">
+    <!--[if IE lt 9]><div class="text-center">
+        <p class="alert alert-warning">您使用的浏览器过于老舅，为了安全性和更好的浏览器体验，请示更新您的的浏览器至最新或采用Chrome，FireFox等现代浏览器, <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></p>
+    </div><![endif]-->
+
+    <div id="app">
+        <my-header class="no-print"></my-header>
+        <div class="row">
             <div class="container">
-                <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
-                <h1 id="project_title"> Welcome to Yizhi's Corner</h1>
-                <h2 id="project_tagline">Learn to copy and paste, better import</h2>
+                <router-view></router-view>
             </div>
-        </header>
-        <div class="container">
-
         </div>
-    </div>
-    <div class="row">
-        <div class="container">
-            <ul class="nav nav-pills">
-                <li><a href="/resume.html#main_content">Resume</a></li>
-                <li><a href="/vue.html">Vue 2.x</a></li>
-                <li><a href="/react.html">React</a></li>
-                <li><a href="/angular.html">Angular 1.x</a></li>
-                <li><a href="//wd.yizhi.com/">WordPress</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="container">
-            <div class="alert text-center">
-                <h3>404 not found or sth is coming</h3>
+        <!--
+        <footer class="footer_wrap">
+            <div class="container">
+                <p class="text-center">
+                    &copy;2014-2017 All Right Reserve
+                </p>
             </div>
-
-        </div>
+        </footer>
+        -->
+        <my-footer></my-footer>
     </div>
 </body>
 
@@ -49,5 +40,6 @@
 <script src="//cdn.bootcss.com/vue-router/2.2.0/vue-router.js"></script>
 <script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
 
+<script src="src/js/main.js"></script>
 
 </html>

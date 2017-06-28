@@ -5,14 +5,14 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="Adonlee.GitHub.com : my github pages">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="src/css/stylesheet.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="shortcut icon" href="img/icon/yz_logo_100.png">
+    <link rel="stylesheet" href="src/css/common.css">
+    <link rel="shortcut icon" href="src/img/icon/yz_logo_100.png">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="img/favorite.png">
-    <link rel="apple-touch-startup-image" href="img/favorite.png" media="all">
+    <link rel="apple-touch-icon" href="src/img/favorite.png">
+    <link rel="apple-touch-startup-image" href="src/img/favorite.png" media="all">
     <meta name="apple-mobile-web-app-title" content="Resume">
     <!-- <meta name="apple-mobile-web-app-status-bar-style" content="translucent black"> -->
     <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
@@ -24,7 +24,7 @@
 <body>
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
-        <header class="inner">
+        <header class="container">
             <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
             <h1 id="project_title">李策东个人简历</h1>
             <h2 id="project_tagline">Learn to copy and paste, better import</h2>
@@ -51,11 +51,11 @@
     $(function() {
 
         fetch('data/resume.md')
-        .then(resp => resp.text())
-        .then(resume => {
-            $('#main_content').html(window.marked(resume));
-            location.href = '#main_content'
-        })
+            .then(resp => resp.text())
+            .then(resume => {
+                $('#main_content').html(window.marked(resume));
+                location.href = '#main_content'
+            })
     })
 </script>
 
