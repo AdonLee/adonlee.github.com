@@ -47,16 +47,7 @@ new Vue({
     components: {
         "my-header": {
             template: `
-                <div id="header_wrap" class="outer">
-                    <header>
-                        <div class="inner">
-                            <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
-                        </div>
-                        <div class="container">
-                            <h1 class="col-md-p" id="project_title"> Welcome to Yizhi's Corner</h1>
-                            <h2 id="project_tagline" class="text-right">Learn to copy and paste, better import</h2>
-                        </div>
-                    </header>
+            <div id="header_wrap">
                     <div class="container">
                         <ul class="nav nav-pills nav-justified">
                             <li>
@@ -78,17 +69,6 @@ new Vue({
                     </div>
                 </div>
             `
-        },
-        'my-footer': {
-            template: `
-                <footer id="footer_wrap">
-                    <div class="container">
-                        <p class="text-center">
-                            &copy;2014-2017 Adam Lee All Right Reserve
-                        </p>
-                    </div>
-                </footer>
-                `
         }
 
     }

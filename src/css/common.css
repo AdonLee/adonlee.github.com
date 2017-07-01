@@ -13,6 +13,18 @@
     background-image: url('../img/icon/loading_ring.svg')
 }
 
+.main-content {
+    min-height: 100vh;
+    padding-top: 192px;
+    margin-top: -192px;
+    padding-bottom: 141px;
+    margin-bottom: -141px;
+}
+
+footer.jumbotron {
+    margin-bottom: 0px;
+}
+
 @media print {
     .no-print,
     header,

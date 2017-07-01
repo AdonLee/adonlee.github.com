@@ -15,7 +15,7 @@
 
 #### 我的优势
 
-- 熟悉`jQuery`/`Bootstrap`/`Angular`，对主流框架`React(jsx/Redux)`、`Angular2(RxJS)`、`Vue`均有所了解；
+- 熟悉`jQuery`/`Bootstrap`/`Angular`，对主流框架`React(JSX/Redux)`、`Angular2(RxJS)`、`Vue`均有所了解；
 
 - 了解`Nodejs`，熟悉`gulp`、`webpack`等前端自动化构建工具；
 

@@ -13,27 +13,36 @@
 
 <body>
     <!--[if IE lt 9]><div class="text-center">
-        <p class="alert alert-warning">您使用的浏览器过于老舅，为了安全性和更好的浏览器体验，请示更新您的的浏览器至最新或采用Chrome，FireFox等现代浏览器, <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></p>
+        <p class="alert alert-warning">您使用的浏览器过于老旧，为了安全性和更好的浏览器体验，请示更新您的的浏览器至最新或采用Chrome，FireFox等现代浏览器, <a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></p>
     </div><![endif]-->
 
-    <div id="app">
+    <div id="header_wrap" class="outer">
+        <header>
+            <div class="inner">
+                <a id="forkme_banner" href="https://github.com/AdonLee">View on GayHub</a>
+            </div>
+            <div class="container">
+                <h1 class="col-md-p" id="project_title"> Welcome to Yizhi's Corner</h1>
+                <h2 id="project_tagline" class="text-right">Learn to copy and paste, better import</h2>
+            </div>
+        </header>
+    </div>
+    <div id="app" class="main-content">
         <my-header class="no-print"></my-header>
         <div class="row">
             <div class="container">
                 <router-view></router-view>
             </div>
         </div>
-        <!--
-        <footer class="footer_wrap">
-            <div class="container">
-                <p class="text-center">
-                    &copy;2014-2017 All Right Reserve
-                </p>
-            </div>
-        </footer>
-        -->
-        <my-footer></my-footer>
     </div>
+
+    <footer id="footer_wrap" class="jumbotron">
+        <div class="container">
+            <p class="text-center">
+                &copy;2014-2017 Adam Lee All Right Reserve
+            </p>
+        </div>
+    </footer>
 </body>
 
 <script src="//cdn.bootcss.com/vue/2.1.4/vue.js"></script>
