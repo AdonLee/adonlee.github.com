@@ -1,8 +1,0 @@
-{{message | capitalize}}  -     -
-v-model ngModel [(ngModel)]
-v-if    ngIf    *ngIf
-v-text  ngBind  [textContent]
-v-for="item in list" ngRepeat="item in list" *ngFor="let item of list"
-v-show/v-hide  ngShow/ngHide  [hidden]
-:value
-@click<br>v-on:click="function name"  ngClick="statement" (click)="statement"
