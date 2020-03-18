@@ -44,19 +44,15 @@
         </footer>
     </div>
 </body>
-<script src="//cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
-<!-- <script src="vendor/marked/marked.min.js"></script> -->
 <script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
 <script>
-    $(function() {
-
-        fetch('data/resume.md')
-            .then(resp => resp.text())
-            .then(resume => {
-                $('#main_content').html(window.marked(resume));
-                location.href = '#main_content'
-            })
-    })
+    
+    fetch('data/resume.md')
+        .then(resp => resp.text())
+        .then(resume => {
+            document.querySelector('#main_content').innerHTML = window.marked(resume);
+            location.href = '#main_content'
+        })
 </script>
 
 </html>
