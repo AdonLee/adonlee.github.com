@@ -17,6 +17,8 @@
 
 - 熟悉`Angular`, `微信小程序(taro)`，对主流框架`React(Redux)`、`Vue(Vuex)`均有所了解；
 
+- 用过.NET Framwork，PHP, 也能写点后端；
+
 - 了解`Nodejs`，熟悉`gulp`、`webpack`等前端自动化构建工具；
 
 - 轻度代码洁癖，追求模块化、规范化、文档化；
