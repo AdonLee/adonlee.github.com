@@ -1,11 +1,11 @@
 # Cedong Lee (Adam)
 [adamlee1024@foxmail.com](mailto:adamlee1024@foxmail.com)
 
-Hello, my name is Cedong Lee. You can call me Adam. I graduated from Zhongkai Agricultural Engineering College in 2014, majoring in communication engineering. Internship is delphi development, found more interested in front-end. After the internship, I happened to have something at home, so I taught myself front-end for more than half a year at home, and then I have been engaged in front-end programming until now.
+Hello, my name is Cedong Lee. You can call me Adam. I graduated from Zhongkai Agricultural Engineering College in 2014, majoring in communication engineering. At the beginning of my career, I got an Internship of developmenting delphi program, however, during that time i found more interested in front-end develepment. After the internship, I happened to have something at home, so I taught myself front-end for more than half a year at home, and then I have been engaged in front-end programming until now.
 
 The main development framework used in recent years is angular, and other mainstream frameworks such as react and Vue are also involved. I'm also familiar with the development of small programs. I'm maintaining the company's current small programs. I use tarojs to develop a small program framework based on react.
 
-Familiar with the back end ASP.NET Development, also used PHP before
+At the backend side, I familiar with ASP.NET Development, also used PHP before
 
 你好，我叫李策东，你可以叫我adam，14年毕业于仲恺农业工程学院，专业是通信工程。实习做的是Delphi开发，后面发现对前端比较感兴趣。实习结束后刚好家里有事所以在家自学了大半年前端，之后一直从事前端编程工作直到现在。
 
